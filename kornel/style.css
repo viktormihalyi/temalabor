@@ -1,0 +1,43 @@
+.page{
+    width:800px;
+    height:800px;
+    margin:auto;
+    padding:10px;
+    background-color: #d3d3d3;
+    position: relative;
+}
+
+.category{
+    margin:10px;
+    padding:10px;
+    border: 1px solid black;
+    display: inline-block;
+}
+
+.category:hover{
+    background-color: white;
+    cursor: pointer;
+}
+
+.categories{
+    background-color: darkgrey;
+}
+
+.filters{
+    width:20%;
+    min-height: 87%;
+    padding:10px;
+    background-color: darkgrey;
+    margin-top: 10px;
+}
+
+.results{
+    width:72%;
+    min-height: 85%;
+    padding:10px;
+    background-color: darkgrey;
+    margin-top: 10px;
+    position: absolute;
+    left:200px;
+    top:70px;
+}

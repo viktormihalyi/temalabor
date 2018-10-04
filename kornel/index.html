@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>UsedPC</title>      
+        <link rel="stylesheet" type="text/css" href="style.css">  
+        <meta charset="UTF-8">
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.4/angular.min.js"></script>
+    </head>
+    <body>
+        <h1 style="text-align:center">UsedPC</h1>
+        <div class="page">
+            <div class="categories" ng-app="myApp" ng-controller="myCtrl">
+                <div class="category" ng-click="loadCategory(x)" ng-repeat="x in categories">{{x}}</div>
+            </div>
+            <div class="filters">
+                szűrők
+            </div>
+            <div class="results">
+                    keresési találatok
+            </div>
+        </div>
+
+        <script>
+            var app = angular.module('myApp', []);
+            app.controller('myCtrl', function($scope) {
+                $scope.categories = ["Alaplap", "Processzor", "Memória"];
+                $scope.loadCategory = function(categoryItem){
+                    alert(categoryItem+" menüpont klikkelve!");
+                }
+            });
+        </script>
+    </body>
+</html>
