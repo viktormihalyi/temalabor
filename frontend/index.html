@@ -1,33 +1,44 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>UsedPC</title>      
-        <link rel="stylesheet" type="text/css" href="style.css">  
-        <meta charset="UTF-8">
-        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.4/angular.min.js"></script>
-    </head>
-    <body>
-        <h1 style="text-align:center">UsedPC</h1>
-        <div class="page">
-            <div class="categories" ng-app="myApp" ng-controller="myCtrl">
-                <div class="category" ng-click="loadCategory(x)" ng-repeat="x in categories">{{x}}</div>
-            </div>
-            <div class="filters">
-                szűrők
-            </div>
-            <div class="results">
-                    keresési találatok
-            </div>
-        </div>
 
-        <script>
-            var app = angular.module('myApp', []);
-            app.controller('myCtrl', function($scope) {
-                $scope.categories = ["Alaplap", "Processzor", "Memória"];
-                $scope.loadCategory = function(categoryItem){
-                    alert(categoryItem+" menüpont klikkelve!");
+<head>
+    <title>UsedPC</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <meta charset="UTF-8">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+
+<body>
+    <h1 style="text-align:center">UsedPC</h1>
+    <div class="page">
+        <div class="categories">
+            <div class="category" v-for="value in categories" v-on:click="loadFilters(value.text)">{{value.text}}</div>
+        </div>
+        <div class="filters">
+            szűrők
+        </div>
+        <div class="results">
+            keresési találatok
+        </div>
+    </div>
+
+    <script>
+        var categoriesList = new Vue({
+            el: '.categories',
+            data: {
+                categories: [
+                    { text: 'Alaplap' },
+                    { text: 'Processzor' },
+                    { text: 'RAM' }
+                ]
+            },
+            methods:{
+                loadFilters:function(message){
+                    alert(message);
                 }
-            });
-        </script>
-    </body>
+            }
+        })
+    </script>
+</body>
+
 </html>
