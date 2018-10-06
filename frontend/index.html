@@ -1,44 +1,100 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
 
 <head>
-    <title>UsedPC</title>
+    <meta charset="utf-8">
     <link rel="stylesheet" type="text/css" href="style.css">
-    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+        crossorigin="anonymous">
+
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <title>UsedPC</title>
 </head>
 
 <body>
-    <h1 style="text-align:center">UsedPC</h1>
-    <div class="page">
-        <div class="categories">
-            <div class="category" v-for="value in categories" v-on:click="loadFilters(value.text)">{{value.text}}</div>
-        </div>
-        <div class="filters">
-            szűrők
-        </div>
-        <div class="results">
-            keresési találatok
+
+    <div class="jumbotron text-center" style="margin-bottom: 0px">
+        <h1>UsedPC</h1>
+    </div>
+    <div class="top">
+        <nav class="navbar navbar-expand-lg bg-dark navbar-dark">
+            <span class="navbar-brand">Kategóriák</span>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="collapsibleNavbar">
+                <ul class="navbar-nav">
+                    <li class="nav-item" v-for="value in categories" v-on:click="loadFilters(value.id)">
+                        <a class="nav-link" href="#">{{value.text}}</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div id="listOfFilters" class="col-sm-3" style="background-color:#aaa">
+                <component v-bind:is="whichFilter"></component>
+            </div>
+            <div class="col-sm-9" style="background-color:#ccc;height:1000px;">Megjelenített találatok</div>
         </div>
     </div>
 
     <script>
+        Vue.component('alaplap',{
+            template: '<div>Alaplaphoz tartozó szűrők listája.</div>'
+        })
+        Vue.component('proci',{
+            template: '<div>Processzorhoz tartozó szűrők listája.</div>'
+        })
+        Vue.component('ram',{
+            template: '<div>RAM-hoz tartozó szűrők listája.</div>'
+        })
+        Vue.component('hutes',{
+            template: '<div>Hűtéshez tartozó szűrők listája.</div>'
+        })
+        
+        var filter = new Vue({
+            el: '#listOfFilters',
+            data:{
+                whichFilter : 'alaplap'
+            }
+        });
+
         var categoriesList = new Vue({
-            el: '.categories',
+            el: '.navbar-nav',
             data: {
                 categories: [
-                    { text: 'Alaplap' },
-                    { text: 'Processzor' },
-                    { text: 'RAM' }
+                    { id: "alaplap", text: 'Alaplap' },
+                    { id: "proci", text: 'Processzor' },
+                    { id: "ram", text: 'RAM' },
+                    { id: "hutes", text: 'Hűtés' },
+                    { id: "haz", text: 'Ház' },
+                    { id: "tap", text: 'Tápegység' },
+                    { id: "vidikari", text: 'Videokártya' },
+                    { id: "hdd", text: 'HDD' },
+                    { id: "ssd", text: 'SSD' },
+                    { id: "optik", text: 'Optikai meghajtó' },
+                    { id: "kompl", text: 'Komplett gép' },
                 ]
             },
-            methods:{
-                loadFilters:function(message){
-                    alert(message);
+            methods: {
+                loadFilters: function (id) {
+                    filter.whichFilter = id;
                 }
             }
-        })
+        });
     </script>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+        crossorigin="anonymous"></script>
 </body>
 
 </html>
