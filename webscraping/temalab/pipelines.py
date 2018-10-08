@@ -3,6 +3,7 @@ from elasticsearch import Elasticsearch
 from bs4 import BeautifulSoup
 from temalab.items import Product
 import scrapy
+import temalab.settings as settings
 
 
 def numbers_from_string(price: str) -> int:
@@ -49,7 +50,7 @@ class ElasticPipeline(object):
         self.es = None
 
     def open_spider(self, spider: scrapy.Spider):
-        self.es = Elasticsearch('http://localhost:9200')
+        self.es = Elasticsearch(settings.ELASTICSEARCH_URL)
 
         if not self.es.ping():
             spider.logger.warn('could not connect to elasticsearch')

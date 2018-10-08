@@ -10,6 +10,7 @@
 #     https://doc.scrapy.org/en/latest/topics/spider-middleware.html
 
 BOT_NAME = 'temalab'
+ELASTICSEARCH_URL = 'http://localhost:9200'
 
 SPIDER_MODULES = ['temalab.spiders']
 NEWSPIDER_MODULE = 'temalab.spiders'
