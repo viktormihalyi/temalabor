@@ -1,0 +1,14 @@
+/home/daniel/Documents/egyetem/temalab/temalabor/backend/webscraper/bin/Debug/netcoreapp2.1/webscraper.deps.json
+/home/daniel/Documents/egyetem/temalab/temalabor/backend/webscraper/bin/Debug/netcoreapp2.1/webscraper.runtimeconfig.json
+/home/daniel/Documents/egyetem/temalab/temalabor/backend/webscraper/bin/Debug/netcoreapp2.1/webscraper.runtimeconfig.dev.json
+/home/daniel/Documents/egyetem/temalab/temalabor/backend/webscraper/bin/Debug/netcoreapp2.1/webscraper.dll
+/home/daniel/Documents/egyetem/temalab/temalabor/backend/webscraper/bin/Debug/netcoreapp2.1/webscraper.pdb
+/home/daniel/Documents/egyetem/temalab/temalabor/backend/webscraper/obj/Debug/netcoreapp2.1/webscraper.csprojAssemblyReference.cache
+/home/daniel/Documents/egyetem/temalab/temalabor/backend/webscraper/obj/Debug/netcoreapp2.1/webscraper.csproj.CoreCompileInputs.cache
+/home/daniel/Documents/egyetem/temalab/temalabor/backend/webscraper/obj/Debug/netcoreapp2.1/webscraper.RazorAssemblyInfo.cache
+/home/daniel/Documents/egyetem/temalab/temalabor/backend/webscraper/obj/Debug/netcoreapp2.1/webscraper.RazorAssemblyInfo.cs
+/home/daniel/Documents/egyetem/temalab/temalabor/backend/webscraper/obj/Debug/netcoreapp2.1/webscraper.AssemblyInfoInputs.cache
+/home/daniel/Documents/egyetem/temalab/temalabor/backend/webscraper/obj/Debug/netcoreapp2.1/webscraper.AssemblyInfo.cs
+/home/daniel/Documents/egyetem/temalab/temalabor/backend/webscraper/obj/Debug/netcoreapp2.1/webscraper.RazorTargetAssemblyInfo.cache
+/home/daniel/Documents/egyetem/temalab/temalabor/backend/webscraper/obj/Debug/netcoreapp2.1/webscraper.dll
+/home/daniel/Documents/egyetem/temalab/temalabor/backend/webscraper/obj/Debug/netcoreapp2.1/webscraper.pdb
