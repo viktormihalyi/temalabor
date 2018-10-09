@@ -1,7 +1,7 @@
 import scrapy
 from bs4 import BeautifulSoup
 from temalab.items import Product
-
+import time
 
 class ParseError(Exception):
     pass
@@ -35,12 +35,14 @@ class ProductSpider(scrapy.Spider):
         bs = BeautifulSoup(response.text, 'html.parser')
 
         product = {
+            '_id': response.url,
             'title': self.get_title(bs),
             'price': self.get_price(bs),
             'url': response.url,
             'site': self.name,
             'description': self.get_description(bs),
             'category': self.get_category(bs),
+            'timestamp': time.time(),
             'bs': bs
         }
         return Product(product)

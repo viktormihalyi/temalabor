@@ -60,5 +60,8 @@ class ElasticPipeline(object):
         if not self.es:
             raise DropItem('not connected to elasticsearch database')
 
-        self.es.index(index='products', doc_type='product', body=dict(item))
+        document_id = item['_id']
+        del item['_id']
+
+        self.es.index(index='products', doc_type='product', id = document_id, body=dict(item))
         return item
