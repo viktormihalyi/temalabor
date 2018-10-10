@@ -23,7 +23,7 @@ class JofogasSpider(common.ProductSpider):
         return bs.select_one('.jofogasicon-right').get('href')
 
     def get_title(self, bs: BeautifulSoup):
-        return bs.select_one('meta[property="og:title"]').content
+        return bs.select_one('meta[property="og:title"]').get('content')
 
     def get_price(self, bs: BeautifulSoup):
         return bs.select_one('.price-value').text
@@ -33,3 +33,6 @@ class JofogasSpider(common.ProductSpider):
 
     def get_category(self, bs: BeautifulSoup):
         return bs.select_one('[itemprop=category]').select_one('.reParamValue').text
+
+    def get_image_url(self, bs: BeautifulSoup, response):
+        return bs.select_one('meta[property="og:image"]').get('content')

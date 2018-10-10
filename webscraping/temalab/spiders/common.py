@@ -43,6 +43,7 @@ class ProductSpider(scrapy.Spider):
             'description': self.get_description(bs),
             'category': self.get_category(bs),
             'timestamp': time.time(),
+            'image_url': self.get_image_url(bs, response),
             'bs': bs
         }
         return Product(product)
@@ -61,4 +62,8 @@ class ProductSpider(scrapy.Spider):
 
     # abstract
     def get_category(self, bs: BeautifulSoup):
+        raise NotImplementedError(self.NOT_IMPLEMENTED_METHOD_ERROR)
+
+    # abstract
+    def get_image_url(self, bs: BeautifulSoup, response):
         raise NotImplementedError(self.NOT_IMPLEMENTED_METHOD_ERROR)

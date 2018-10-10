@@ -11,7 +11,10 @@ def numbers_from_string(price: str) -> int:
 
 
 def parse_description(desc: BeautifulSoup) -> str:
-    return desc.get_text(separator='\n').strip()
+    rows = ''.join([str(s).replace('\n', ' ') for s in desc.contents])
+    bs_rows = BeautifulSoup(rows, 'html.parser')
+    nice_text = bs_rows.get_text(separator='\n')
+    return nice_text.strip()
 
 
 class ProductPipeline(object):
@@ -63,5 +66,8 @@ class ElasticPipeline(object):
         document_id = item['_id']
         del item['_id']
 
-        self.es.index(index='products', doc_type='product', id = document_id, body=dict(item))
+        if item['title'] is None or item['title'] == "":
+            raise DropItem('title missing')
+
+        self.es.index(index='products', doc_type='product', id=document_id, body=dict(item))
         return item
