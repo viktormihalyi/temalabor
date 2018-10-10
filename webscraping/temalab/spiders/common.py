@@ -2,6 +2,7 @@ import scrapy
 from bs4 import BeautifulSoup
 from temalab.items import Product
 import time
+import hashlib
 
 class ParseError(Exception):
     pass
@@ -35,7 +36,7 @@ class ProductSpider(scrapy.Spider):
         bs = BeautifulSoup(response.text, 'html.parser')
 
         product = {
-            '_id': response.url,
+            '_id': hashlib.sha256(response.url.encode('utf-8')).hexdigest(),
             'title': self.get_title(bs),
             'price': self.get_price(bs),
             'url': response.url,
