@@ -17,8 +17,13 @@ def parse_description(desc: BeautifulSoup) -> str:
     return nice_text.strip()
 
 
+def strip_title(title: str) -> str:
+    return title.strip()
+
+
 class ProductPipeline(object):
     def process_item(self, item: Product, spider: scrapy.Spider):
+        item['title'] = strip_title(item['title'])
         item['price'] = numbers_from_string(item['price'])
         item['description'] = parse_description(item['description'])
 
@@ -32,6 +37,7 @@ class HardverAproPipeline(object):
     SKIPPED_CATEGORIES = ['* boltok, szervizek']
 
     def process_item(self, item: Product, spider: scrapy.Spider):
+        item['title'] = strip_title(item['title'])
         item['price'] = numbers_from_string(item['price'])
         item['description'] = parse_description(item['description'])
 
