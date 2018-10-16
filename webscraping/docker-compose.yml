@@ -1,7 +1,7 @@
 version: '3'
 services:
   webscraping:
-    image: hi
+    build: .
     depends_on:
       - elasticsearch
 
