@@ -61,10 +61,6 @@ class ElasticPipeline(object):
     def open_spider(self, spider: scrapy.Spider):
         self.es = Elasticsearch(settings.ELASTICSEARCH_URL)
 
-        if not self.es.ping():
-            spider.logger.warn('could not connect to elasticsearch')
-            self.es = None
-
     def process_item(self, item, spider: scrapy.Spider):
         if not self.es:
             raise DropItem('not connected to elasticsearch database')
@@ -74,6 +70,9 @@ class ElasticPipeline(object):
 
         if item['title'] is None or item['title'] == "":
             raise DropItem('title missing')
+
+        if not self.es.ping():
+            spider.logger.warn('could not connect to elasticsearch')
 
         self.es.index(index='products', doc_type='product', id=document_id, body=dict(item))
         return item
