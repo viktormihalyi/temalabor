@@ -20,9 +20,6 @@ namespace webscraper
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-                .UseKestrel(options => {
-                    options.Listen(IPAddress.Loopback,5080); // setup to use simple http
-                })
                 .UseStartup<Startup>();
     }
 }

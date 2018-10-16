@@ -20,35 +20,40 @@ namespace webscraper.Controllers
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            string query = "";
-            var response = await _elasticClient.SearchAsync<Product>(
-                 s => s.Query(q => q.QueryString(d => d.Query(query))));
-            return Ok(response.Documents);
+            
+            return Ok("Teszt");
         }
 
-        // GET api/values/5
-        [HttpGet("{id}")]
-        public ActionResult<string> Get(int id)
-        {
-            return "value";
+
+        // GET api/products/name
+        [HttpGet("search")]
+        public async Task<IActionResult> Get(string category, string title)
+        {   
+            
+            QueryContainer qContainer = new QueryContainer();
+            QueryContainerDescriptor<Product> qcd = new QueryContainerDescriptor<Product>();
+
+            if(category != null)
+            {
+                qContainer = qContainer && qcd.Match(m => m
+                        .Field(f => f.Category)
+                        .Query(category)
+                );
+            }
+            if (title != null)
+            {
+                qContainer = qContainer && qcd.Match(m => m
+                        .Field(f => f.Title)
+                        .Query(title)
+                );
+            }
+           
+            var response = await _elasticClient.SearchAsync<Product>(s => s.Query(_ => qContainer));
+            var products = response.Documents;
+
+            return Ok(products);
         }
 
-        // POST api/values
-        [HttpPost]
-        public void Post([FromBody] string value)
-        {
-        }
-
-        // PUT api/values/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE api/values/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
+       
     }
 }
