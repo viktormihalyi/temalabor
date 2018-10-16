@@ -36,3 +36,6 @@ class HardverAproSpider(common.ProductSpider):
     def get_category(self, bs: BeautifulSoup):
         category = bs.select('.breadcrumb-item')[3].text.lower()
         return category
+
+    def get_image_url(self, bs: BeautifulSoup, response):
+        return response.urljoin(bs.select_one('.carousel-item.active').img.get('src'))

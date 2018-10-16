@@ -1,5 +1,6 @@
 from bs4 import BeautifulSoup
 import temalab.spiders.common as common
+import re
 
 
 class JofogasSpider(common.ProductSpider):
@@ -23,13 +24,21 @@ class JofogasSpider(common.ProductSpider):
         return bs.select_one('.jofogasicon-right').get('href')
 
     def get_title(self, bs: BeautifulSoup):
-        return bs.select_one('meta[property="og:title"]').content
+        return bs.select_one('meta[property="og:title"]').get('content')
 
     def get_price(self, bs: BeautifulSoup):
-        return bs.select_one('.price-value').text
+        price_regex = r'package_price=([0-9]+)'
+        match = re.search(price_regex, bs.__str__())
+        if match:
+            return match.group(1)
+        else:
+            return None
 
     def get_description(self, bs: BeautifulSoup):
         return bs.select_one('[itemprop=description]')
 
     def get_category(self, bs: BeautifulSoup):
         return bs.select_one('[itemprop=category]').select_one('.reParamValue').text
+
+    def get_image_url(self, bs: BeautifulSoup, response):
+        return bs.select_one('meta[property="og:image"]').get('content')

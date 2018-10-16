@@ -37,3 +37,10 @@ class VateraSpider(common.ProductSpider):
 
     def get_category(self, bs: BeautifulSoup):
         return bs.select('[itemprop=title]')[2].text
+
+    def get_image_url(self, bs: BeautifulSoup, response):
+        meta_image = bs.select_one('meta[property="og:image"]')
+        if meta_image:
+            return meta_image.get('content')
+        else:
+            return None

@@ -10,6 +10,7 @@ class Product(scrapy.Item):
     description = scrapy.Field()
     category = scrapy.Field()
     timestamp = scrapy.Field()
+    image_url = scrapy.Field()
 
     bs = scrapy.Field()
 

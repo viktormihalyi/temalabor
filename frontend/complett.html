@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+        crossorigin="anonymous">
+
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/http-vue-loader"></script>
+    <title>UsedPC</title>
+</head>
+
+<body>
+    <div id="topbar">
+        <top-component></top-component>
+    </div>
+    <div class="container-fluid">
+        <div class="row">
+            <div id="listOfFilters" class="col-sm-3" style="background-color:#aaa;min-height:1000px;padding-bottom: 20px;">
+                <div>
+                    <form>
+                        <div id="filtertopbar">
+                            <filtertop-component></filtertop-component>
+                        </div>
+                        <h4 class="complettList">Alaplap</h4>
+                        <div id="motherboard">
+                            <motherboard-component></motherboard-component>
+                        </div>
+                        <h4 class="complettList">Processzor</h4>
+                        <div id="processor">
+                            <processor-component></processor-component>
+                        </div>
+                        <h4 class="complettList">RAM</h4>
+                        <div id="ram">
+                            <ram-component></ram-component>
+                        </div>
+                        <h4 class="complettList">Hűtés</h4>
+                        <div id="cooling">
+                            <cooling-component></cooling-component>
+                        </div>
+                        <h4 class="complettList">Ház</h4>
+                        <div id="case">
+                            <case-component></case-component>
+                        </div>
+                        <h4 class="complettList">Tápegység</h4>
+                        <div id="psu">
+                            <psu-component></psu-component>
+                        </div>
+                        <h4 class="complettList">Videokártya</h4>
+                        <div id="videocard">
+                            <videocard-component></videocard-component>
+                        </div>
+                        <h4 class="complettList">HDD</h4>
+                        <div id="hdd">
+                            <hdd-component></hdd-component>
+                        </div>
+                        <h4 class="complettList">SSD</h4>
+                        <div id="ssd">
+                            <ssd-component></ssd-component>
+                        </div>
+                        <h4 class="complettList">Optikai meghajtó</h4>
+                        <div id="optic">
+                            <optic-component></optic-component>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="col-sm-9" style="background-color:#ccc;min-height:1000px;">Megjelenített találatok</div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        new Vue({
+            el: '#topbar',
+            components: {
+                'top-component': httpVueLoader('vues/top.vue')
+            }
+        });
+        new Vue({
+            el: '#filtertopbar',
+            components: {
+                'filtertop-component': httpVueLoader('vues/filterTop.vue')
+            }
+        });
+        new Vue({
+            el: '#motherboard',
+            components: {
+                'motherboard-component': httpVueLoader('vues/motherboard.vue')
+            }
+        });
+        new Vue({
+            el: '#case',
+            components: {
+                'case-component': httpVueLoader('vues/case.vue')
+            }
+        });
+        new Vue({
+            el: '#cooling',
+            components: {
+                'cooling-component': httpVueLoader('vues/cooling.vue')
+            }
+        });
+        new Vue({
+            el: '#hdd',
+            components: {
+                'hdd-component': httpVueLoader('vues/hdd.vue')
+            }
+        });
+        new Vue({
+            el: '#optic',
+            components: {
+                'optic-component': httpVueLoader('vues/optic.vue')
+            }
+        });
+        new Vue({
+            el: '#processor',
+            components: {
+                'processor-component': httpVueLoader('vues/proci.vue')
+            }
+        });
+        new Vue({
+            el: '#psu',
+            components: {
+                'psu-component': httpVueLoader('vues/psu.vue')
+            }
+        });
+        new Vue({
+            el: '#ram',
+            components: {
+                'ram-component': httpVueLoader('vues/ram.vue')
+            }
+        });
+        new Vue({
+            el: '#ssd',
+            components: {
+                'ssd-component': httpVueLoader('vues/ssd.vue')
+            }
+        });
+        new Vue({
+            el: '#videocard',
+            components: {
+                'videocard-component': httpVueLoader('vues/videocard.vue')
+            }
+        });
+    </script>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
