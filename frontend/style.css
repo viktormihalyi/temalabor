@@ -8,3 +8,13 @@
     margin-right: auto;
     max-width: 1200px;
 }
+
+.name:link, .name:visited, .name:hover, .name:active, .name{
+    text-decoration: none;
+    color:#000;
+}
+
+.complettList{
+    margin-top: 25px;
+    font-weight: bold;
+}
