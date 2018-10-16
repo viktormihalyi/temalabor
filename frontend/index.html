@@ -1,4 +1,3 @@
-
 <!doctype html>
 <html lang="en">
 
@@ -15,11 +14,6 @@
 </head>
 
 <body>
-
-    <script type="text/x-template" id="#alaplapTemplate">
-        <div>gehpwiewgpgwehpi</div>
-    </script>
-
     <div class="jumbotron text-center" style="margin-bottom: 0px">
         <h1>UsedPC</h1>
     </div>
@@ -41,24 +35,69 @@
 
     <div class="container-fluid">
         <div class="row">
-            <div id="listOfFilters" class="col-sm-3" style="background-color:#aaa">
+            <div id="listOfFilters" class="col-sm-3" style="background-color:#aaa;min-height:1000px;padding-bottom: 20px;">
                 <component v-bind:is="whichFilter"></component>
             </div>
-            <div class="col-sm-9" style="background-color:#ccc;height:1000px;">Megjelenített találatok</div>
+            <div class="col-sm-9" style="background-color:#ccc;min-height:1000px;">Megjelenített találatok</div>
         </div>
     </div>
 
     <script>
-        Vue.component('alaplap',{
-            template:   `
+        Vue.component('alaplap', {
+            template: `
                         <div>
                             <form>
                                 
-                                <center><button class="btn btn-success" style="margin:25px" type="submit">Találatok szűrése</button></center> 
+                                <center><button class="btn btn-primary" style="margin:25px" type="submit">Találatok szűrése</button></center> 
 
                                 <h5>Keresés</h5>
                                 <input type="text" class="form-control" id="searchedText">
 
+                                <h5 style="margin-top:25px">Ár</h5>
+                                <div class="input-group mb-3">
+                                    <input type="number" name="priceFrom" class="form-control" placeholder="Minimum">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"> - </span>
+                                    </div>
+                                    <input type="number" name="priceTo" class="form-control" placeholder="Maximum">
+                                </div>
+                                
+                                <h5 style="margin-top:25px">Méret szabvány</h5>
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="size0" name="size" value="ATX">
+                                    <label class="custom-control-label" for="size0">ATX</label>
+                                </div>
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="size1" name="size" value="micro-ATX">
+                                    <label class="custom-control-label" for="size1">micro-ATX</label>
+                                </div>
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="size2" name="size" value="mini-ITX">
+                                    <label class="custom-control-label" for="size2">mini-ITX</label>
+                                </div>
+
+                                <h5 style="margin-top:25px">Memória típusa</h5>
+                                <div class="custom-control custom-radio">
+                                    <input type="radio" class="custom-control-input" id="memtip0" name="memtip" value="DDR3">
+                                    <label class="custom-control-label" for="memtip0">DDR3</label>
+                                </div>  
+                                <div class="custom-control custom-radio">
+                                    <input type="radio" class="custom-control-input" id="memtip1" name="memtip" value="DDR4">
+                                    <label class="custom-control-label" for="memtip1">DDR4</label>
+                                </div>
+                            </form>
+                        </div>
+                        `
+        })
+        Vue.component('proci', {
+            template: `
+                        <div>
+                            <form>
+                                
+                                <center><button class="btn btn-primary" style="margin:25px" type="submit">Találatok szűrése</button></center> 
+
+                                <h5>Keresés</h5>
+                                <input type="text" class="form-control" id="searchedText">
 
                                 <h5 style="margin-top:25px">Ár</h5>
                                 <div class="input-group mb-3">
@@ -68,45 +107,823 @@
                                     </div>
                                     <input type="number" class="form-control" placeholder="Maximum">
                                 </div>
+                                
+                                <h5 style="margin-top:25px">Típus</h5>
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="type0" name="tipus">
+                                    <label class="custom-control-label" for="type0">Intel Celeron</label>
+                                </div>
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="type1" name="tipus">
+                                    <label class="custom-control-label" for="type1">Intel Pentium</label>
+                                </div>
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="type2" name="tipus">
+                                    <label class="custom-control-label" for="type2">Intel Core i3</label>
+                                </div>
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="type3" name="tipus">
+                                    <label class="custom-control-label" for="type3">Intel Core i5</label>
+                                </div>
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="type4" name="tipus">
+                                    <label class="custom-control-label" for="type4">Intel Core i7</label>
+                                </div>
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="type5" name="tipus">
+                                    <label class="custom-control-label" for="type5">Intel Core i9</label>
+                                </div>
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="type6" name="tipus">
+                                    <label class="custom-control-label" for="type6">Intel Xeon</label>
+                                </div>
+                                <br>
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="type7" name="tipus">
+                                    <label class="custom-control-label" for="type7">AMD Bulldozer</label>
+                                </div>
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="type8" name="tipus">
+                                    <label class="custom-control-label" for="type8">AMD Piledriver</label>
+                                </div>
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="type9" name="tipus">
+                                    <label class="custom-control-label" for="type9">AMD Ryzen 3</label>
+                                </div>
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="type10" name="tipus">
+                                    <label class="custom-control-label" for="type10">AMD Ryzen 5</label>
+                                </div>
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="type11" name="tipus">
+                                    <label class="custom-control-label" for="type11">AMD Ryzen 7</label>
+                                </div>
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="type12" name="tipus">
+                                    <label class="custom-control-label" for="type12">AMD Ryzen Threadripper</label>
+                                </div>
                             </form>
                         </div>
                         `
         })
-        Vue.component('proci',{
-            template: '<div>Processzorhoz tartozó szűrők listája.</div>'
+        Vue.component('ram', {
+            template: `
+                        <div>
+                            <form>
+                                
+                                <center><button class="btn btn-primary" style="margin:25px" type="submit">Találatok szűrése</button></center> 
+
+                                <h5>Keresés</h5>
+                                <input type="text" class="form-control" id="searchedText">
+
+                                <h5 style="margin-top:25px">Ár</h5>
+                                <div class="input-group mb-3">
+                                    <input type="number" class="form-control" placeholder="Minimum">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"> - </span>
+                                    </div>
+                                    <input type="number" class="form-control" placeholder="Maximum">
+                                </div>
+                                
+                                <h5 style="margin-top:25px">Kapacitás</h5>
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="kapac0" name="kapac">
+                                    <label class="custom-control-label" for="kapac0">1 GB</label>
+                                </div>
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="kapac1" name="kapac">
+                                    <label class="custom-control-label" for="kapac1">2 GB</label>
+                                </div>
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="kapac2" name="kapac">
+                                    <label class="custom-control-label" for="kapac2">4 GB</label>
+                                </div>
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="kapac3" name="kapac">
+                                    <label class="custom-control-label" for="kapac3">8 GB</label>
+                                </div>
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="kapac4" name="kapac">
+                                    <label class="custom-control-label" for="kapac4">16 GB</label>
+                                </div>
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="kapac5" name="kapac">
+                                    <label class="custom-control-label" for="kapac5">32 GB</label>
+                                </div>
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="kapac6" name="kapac">
+                                    <label class="custom-control-label" for="kapac6">64 GB</label>
+                                </div>
+
+                                <h5 style="margin-top:25px">Memória típusa</h5>
+                                <div class="custom-control custom-radio">
+                                    <input type="radio" class="custom-control-input" id="memtip0" name="memtip" value="DDR3">
+                                    <label class="custom-control-label" for="memtip0">DDR3</label>
+                                </div>  
+                                <div class="custom-control custom-radio">
+                                    <input type="radio" class="custom-control-input" id="memtip1" name="memtip" value="DDR4">
+                                    <label class="custom-control-label" for="memtip1">DDR4</label>
+                                </div>
+                            </form>
+                        </div>
+                        `
         })
-        Vue.component('ram',{
-            template: '<div>RAM-hoz tartozó szűrők listája.</div>'
+        Vue.component('hutes', {
+            template: `
+                        <div>
+                            <form>
+                                
+                                <center><button class="btn btn-primary" style="margin:25px" type="submit">Találatok szűrése</button></center> 
+
+                                <h5>Keresés</h5>
+                                <input type="text" class="form-control" id="searchedText">
+
+                                <h5 style="margin-top:25px">Ár</h5>
+                                <div class="input-group mb-3">
+                                    <input type="number" class="form-control" placeholder="Minimum">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"> - </span>
+                                    </div>
+                                    <input type="number" class="form-control" placeholder="Maximum">
+                                </div>
+                                
+                                <h5 style="margin-top:25px">Felépítés</h5>
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="buildtype0" name="buildtype">
+                                    <label class="custom-control-label" for="buildtype0">Vízhűtés</label>
+                                </div>
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="buildtype1" name="buildtype">
+                                    <label class="custom-control-label" for="buildtype1">Aktív</label>
+                                </div>
+
+                                <h5 style="margin-top:25px">Típus</h5>
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="coolertype0" name="coolertype">
+                                    <label class="custom-control-label" for="coolertype0">Ház</label>
+                                </div>
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="coolertype1" name="coolertype">
+                                    <label class="custom-control-label" for="coolertype1">Processzor</label>
+                                </div>
+                            </form>
+                        </div>
+                        `
         })
-        Vue.component('hutes',{
-            template: '<div>Hűtéshez tartozó szűrők listája.</div>'
+        Vue.component('haz', {
+            template: `
+                        <div>
+                            <form>
+                                
+                                <center><button class="btn btn-primary" style="margin:25px" type="submit">Találatok szűrése</button></center> 
+
+                                <h5>Keresés</h5>
+                                <input type="text" class="form-control" id="searchedText">
+
+                                <h5 style="margin-top:25px">Ár</h5>
+                                <div class="input-group mb-3">
+                                    <input type="number" class="form-control" placeholder="Minimum">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"> - </span>
+                                    </div>
+                                    <input type="number" class="form-control" placeholder="Maximum">
+                                </div>
+                                
+                            </form>
+                        </div>
+                        `
         })
-        Vue.component('haz',{
-            template: '<div>Házhoz tartozó szűrők listája.</div>'
+        Vue.component('tap', {
+            template: `
+                        <div>
+                            <form>
+                                
+                                <center><button class="btn btn-primary" style="margin:25px" type="submit">Találatok szűrése</button></center> 
+
+                                <h5>Keresés</h5>
+                                <input type="text" class="form-control" id="searchedText">
+
+                                <h5 style="margin-top:25px">Ár</h5>
+                                <div class="input-group mb-3">
+                                    <input type="number" class="form-control" placeholder="Minimum">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"> - </span>
+                                    </div>
+                                    <input type="number" class="form-control" placeholder="Maximum">
+                                </div>
+
+                                <h5 style="margin-top:25px">Teljesítmény</h5>
+                                <div class="input-group mb-3">
+                                    <input type="number" class="form-control" placeholder="Minimum">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"> - </span>
+                                    </div>
+                                    <input type="number" class="form-control" placeholder="Maximum">
+                                </div>
+                                
+                                <h5 style="margin-top:25px">Kábelezés</h5>
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="cable2" name="cable">
+                                    <label class="custom-control-label" for="cable2">Fix kábelezésű</label>
+                                </div>
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="cable1" name="cable">
+                                    <label class="custom-control-label" for="cable1">Félmoduláris</label>
+                                </div>
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="cable0" name="cable">
+                                    <label class="custom-control-label" for="cable0">Moduláris</label>
+                                </div>
+                            </form>
+                        </div>
+                        `
         })
-        Vue.component('tap',{
-            template: '<div>Tápegységhez tartozó szűrők listája.</div>'
+        Vue.component('vidikari', {
+            template: `
+                        <div>
+                            <form>
+                                
+                                <center><button class="btn btn-primary" style="margin:25px" type="submit">Találatok szűrése</button></center> 
+
+                                <h5>Keresés</h5>
+                                <input type="text" class="form-control" id="searchedText">
+
+                                <h5 style="margin-top:25px">Ár</h5>
+                                <div class="input-group mb-3">
+                                    <input type="number" class="form-control" placeholder="Minimum">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"> - </span>
+                                    </div>
+                                    <input type="number" class="form-control" placeholder="Maximum">
+                                </div>
+                                
+                                <h5 style="margin-top:25px">Memória mérete</h5>
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="videocardMemsize0" name="videocardMemsize">
+                                    <label class="custom-control-label" for="videocardMemsize0">1 GB</label>
+                                </div>
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="videocardMemsize1" name="videocardMemsize">
+                                    <label class="custom-control-label" for="videocardMemsize1">2 GB</label>
+                                </div>
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="videocardMemsize2" name="videocardMemsize">
+                                    <label class="custom-control-label" for="videocardMemsize2">3 GB</label>
+                                </div>
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="videocardMemsize3" name="videocardMemsize">
+                                    <label class="custom-control-label" for="videocardMemsize3">4 GB</label>
+                                </div>
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="videocardMemsize4" name="videocardMemsize">
+                                    <label class="custom-control-label" for="videocardMemsize4">6 GB</label>
+                                </div>
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="videocardMemsize5" name="videocardMemsize">
+                                    <label class="custom-control-label" for="videocardMemsize5">8 GB</label>
+                                </div>
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="videocardMemsize6" name="videocardMemsize">
+                                    <label class="custom-control-label" for="videocardMemsize6">>8 GB</label>
+                                </div>
+
+                                <h5 style="margin-top:25px">Hűtés típusa</h5>
+                                <div class="custom-control custom-radio">
+                                    <input type="radio" class="custom-control-input" id="videocardCoolertype0" name="videocardCoolertype" value="Aktív">
+                                    <label class="custom-control-label" for="videocardCoolertype0">Aktív</label>
+                                </div>  
+                                <div class="custom-control custom-radio">
+                                    <input type="radio" class="custom-control-input" id="videocardCoolertype1" name="videocardCoolertype" value="Passzív">
+                                    <label class="custom-control-label" for="videocardCoolertype1">Passzív</label>
+                                </div>
+                                <div class="custom-control custom-radio">
+                                    <input type="radio" class="custom-control-input" id="videocardCoolertype2" name="videocardCoolertype" value="Vízhűtés">
+                                    <label class="custom-control-label" for="videocardCoolertype2">Vízhűtés</label>
+                                </div>
+                            </form>
+                        </div>
+                        `
         })
-        Vue.component('vidikari',{
-            template: '<div>Videókártyához tartozó szűrők listája.</div>'
+        Vue.component('hdd', {
+            template: `
+                        <div>
+                            <form>
+                                
+                                <center><button class="btn btn-primary" style="margin:25px" type="submit">Találatok szűrése</button></center> 
+
+                                <h5>Keresés</h5>
+                                <input type="text" class="form-control" id="searchedText">
+
+                                <h5 style="margin-top:25px">Ár</h5>
+                                <div class="input-group mb-3">
+                                    <input type="number" class="form-control" placeholder="Minimum">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"> - </span>
+                                    </div>
+                                    <input type="number" class="form-control" placeholder="Maximum">
+                                </div>
+
+                                <h5 style="margin-top:25px">Kapacitás</h5>
+                                <div class="input-group mb-3">
+                                    <input type="number" class="form-control" placeholder="Minimum">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"> - </span>
+                                    </div>
+                                    <input type="number" class="form-control" placeholder="Maximum">
+                                </div>
+                                
+                                <h5 style="margin-top:25px">Fordulatszám</h5>
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="hddRpm0" name="hddRpm">
+                                    <label class="custom-control-label" for="hddRpm0">5400 rpm</label>
+                                </div>
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="hddRpm1" name="hddRpm">
+                                    <label class="custom-control-label" for="hddRpm1">7200 rpm</label>
+                                </div>
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="hddRpm2" name="hddRpm">
+                                    <label class="custom-control-label" for="hddRpm2">10000 rpm</label>
+                                </div>
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="hddRpm3" name="hddRpm">
+                                    <label class="custom-control-label" for="hddRpm3">15000 rpm</label>
+                                </div>
+
+                                <h5 style="margin-top:25px">Átmérő</h5>
+                                <div class="custom-control custom-radio">
+                                    <input type="radio" class="custom-control-input" id="hddSize0" name="hddSize" value="2,5 inch">
+                                    <label class="custom-control-label" for="hddSize0">2,5 inch</label>
+                                </div>  
+                                <div class="custom-control custom-radio">
+                                    <input type="radio" class="custom-control-input" id="hddSize1" name="hddSize" value="3,5 inch">
+                                    <label class="custom-control-label" for="hddSize1">3,5 inch</label>
+                                </div>
+                            </form>
+                        </div>
+                        `
         })
-        Vue.component('hdd',{
-            template: '<div>HDD-hez tartozó szűrők listája.</div>'
+        Vue.component('ssd', {
+            template: `
+                        <div>
+                            <form>
+                                
+                                <center><button class="btn btn-primary" style="margin:25px" type="submit">Találatok szűrése</button></center> 
+
+                                <h5>Keresés</h5>
+                                <input type="text" class="form-control" id="searchedText">
+
+                                <h5 style="margin-top:25px">Ár</h5>
+                                <div class="input-group mb-3">
+                                    <input type="number" class="form-control" placeholder="Minimum">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"> - </span>
+                                    </div>
+                                    <input type="number" class="form-control" placeholder="Maximum">
+                                </div>
+
+                                <h5 style="margin-top:25px">Kapacitás</h5>
+                                <div class="input-group mb-3">
+                                    <input type="number" class="form-control" placeholder="Minimum">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"> - </span>
+                                    </div>
+                                    <input type="number" class="form-control" placeholder="Maximum">
+                                </div>
+                                
+                                <h5 style="margin-top:25px">NAND flash típusa</h5>
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="ssdNandType0" name="ssdNandType">
+                                    <label class="custom-control-label" for="ssdNandType0">SLC</label>
+                                </div>
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="ssdNandType1" name="ssdNandType">
+                                    <label class="custom-control-label" for="ssdNandType1">MLC</label>
+                                </div>
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="ssdNandType2" name="ssdNandType">
+                                    <label class="custom-control-label" for="ssdNandType2">TLC</label>
+                                </div>
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="ssdNandType3" name="ssdNandType">
+                                    <label class="custom-control-label" for="ssdNandType3">3D XPoint</label>
+                                </div>
+
+                                <h5 style="margin-top:25px">Típus</h5>
+                                <div class="custom-control custom-radio">
+                                    <input type="radio" class="custom-control-input" id="ssdtype0" name="ssdtype" value="2,5 inch">
+                                    <label class="custom-control-label" for="ssdtype0">2,5 inch</label>
+                                </div>  
+                                <div class="custom-control custom-radio">
+                                    <input type="radio" class="custom-control-input" id="ssdtype1" name="ssdtype" value="M.2">
+                                    <label class="custom-control-label" for="ssdtype1">M.2</label>
+                                </div>
+                                <div class="custom-control custom-radio">
+                                    <input type="radio" class="custom-control-input" id="ssdtype2" name="ssdtype" value="NVMe">
+                                    <label class="custom-control-label" for="ssdtype2">NVMe</label>
+                                </div>
+                            </form>
+                        </div>
+                        `
         })
-        Vue.component('ssd',{
-            template: '<div>SSD-hez tartozó szűrők listája.</div>'
+        Vue.component('optik', {
+            template: `
+                        <div>
+                            <form>
+                                
+                                <center><button class="btn btn-primary" style="margin:25px" type="submit">Találatok szűrése</button></center> 
+
+                                <h5>Keresés</h5>
+                                <input type="text" class="form-control" id="searchedText">
+
+                                <h5 style="margin-top:25px">Ár</h5>
+                                <div class="input-group mb-3">
+                                    <input type="number" class="form-control" placeholder="Minimum">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"> - </span>
+                                    </div>
+                                    <input type="number" class="form-control" placeholder="Maximum">
+                                </div>
+                                
+                                <h5 style="margin-top:25px">Típus</h5>
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="oddtype0" name="oddtype" value="cd">
+                                    <label class="custom-control-label" for="oddtype0">Cd író/olvasó</label>
+                                </div>
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="oddtype1" name="oddtype" value="dvd">
+                                    <label class="custom-control-label" for="oddtype1">DVD író/olvasó</label>
+                                </div>
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="oddtype2" name="oddtype" value="bluray">
+                                    <label class="custom-control-label" for="oddtype2">Blu-ray író/olvasó</label>
+                                </div>
+
+                                <h5 style="margin-top:25px">Kialakítás</h5>
+                                <div class="custom-control custom-radio">
+                                    <input type="radio" class="custom-control-input" id="oddkind0" name="oddkind" value="kulso">
+                                    <label class="custom-control-label" for="oddkind0">Belső</label>
+                                </div>  
+                                <div class="custom-control custom-radio">
+                                    <input type="radio" class="custom-control-input" id="oddkind1" name="oddkind" value="belso">
+                                    <label class="custom-control-label" for="oddkind1">Külső</label>
+                                </div>
+                            </form>
+                        </div>
+                        `
         })
-        Vue.component('optik',{
-            template: '<div>Optikai meghajtóhoz tartozó szűrők listája.</div>'
+        Vue.component('kompl', {
+            template: `
+                        <div>
+                            <form>                              
+                                <center><button class="btn btn-primary" style="margin:25px" type="submit">Találatok szűrése</button></center> 
+
+                                <h5>Keresés</h5>
+                                <input type="text" class="form-control" id="searchedText">
+
+                                <h5 style="margin-top:25px">Ár</h5>
+                                <div class="input-group mb-3">
+                                    <input type="number" name="priceFrom" class="form-control" placeholder="Minimum">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"> - </span>
+                                    </div>
+                                    <input type="number" name="priceTo" class="form-control" placeholder="Maximum">
+                                </div>
+                                
+                                <h4>Alaplap</h4>
+                                <div style="margin-left:15px">
+                                    <h5>Méret szabvány</h5>
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" id="size0" name="size" value="ATX">
+                                        <label class="custom-control-label" for="size0">ATX</label>
+                                    </div>
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" id="size1" name="size" value="micro-ATX">
+                                        <label class="custom-control-label" for="size1">micro-ATX</label>
+                                    </div>
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" id="size2" name="size" value="mini-ITX">
+                                        <label class="custom-control-label" for="size2">mini-ITX</label>
+                                    </div>
+                                </div>
+
+                                <h4 style="margin-top:25px">Processzor</h4>
+                                <div style="margin-left:15px">
+                                    <h5>Típus</h5>
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" id="type0" name="tipus">
+                                        <label class="custom-control-label" for="type0">Intel Celeron</label>
+                                    </div>
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" id="type1" name="tipus">
+                                        <label class="custom-control-label" for="type1">Intel Pentium</label>
+                                    </div>
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" id="type2" name="tipus">
+                                        <label class="custom-control-label" for="type2">Intel Core i3</label>
+                                    </div>
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" id="type3" name="tipus">
+                                        <label class="custom-control-label" for="type3">Intel Core i5</label>
+                                    </div>
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" id="type4" name="tipus">
+                                        <label class="custom-control-label" for="type4">Intel Core i7</label>
+                                    </div>
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" id="type5" name="tipus">
+                                        <label class="custom-control-label" for="type5">Intel Core i9</label>
+                                    </div>
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" id="type6" name="tipus">
+                                        <label class="custom-control-label" for="type6">Intel Xeon</label>
+                                    </div>
+                                    <br>
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" id="type7" name="tipus">
+                                        <label class="custom-control-label" for="type7">AMD Bulldozer</label>
+                                    </div>
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" id="type8" name="tipus">
+                                        <label class="custom-control-label" for="type8">AMD Piledriver</label>
+                                    </div>
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" id="type9" name="tipus">
+                                        <label class="custom-control-label" for="type9">AMD Ryzen 3</label>
+                                    </div>
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" id="type10" name="tipus">
+                                        <label class="custom-control-label" for="type10">AMD Ryzen 5</label>
+                                    </div>
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" id="type11" name="tipus">
+                                        <label class="custom-control-label" for="type11">AMD Ryzen 7</label>
+                                    </div>
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" id="type12" name="tipus">
+                                        <label class="custom-control-label" for="type12">AMD Ryzen Threadripper</label>
+                                    </div>
+                                </div>
+
+                                <h4 style="margin-top:25px">RAM</h4>
+                                <div style="margin-left:15px">
+                                    <h5>Kapacitás</h5>
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" id="kapac0" name="kapac">
+                                        <label class="custom-control-label" for="kapac0">1 GB</label>
+                                    </div>
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" id="kapac1" name="kapac">
+                                        <label class="custom-control-label" for="kapac1">2 GB</label>
+                                    </div>
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" id="kapac2" name="kapac">
+                                        <label class="custom-control-label" for="kapac2">4 GB</label>
+                                    </div>
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" id="kapac3" name="kapac">
+                                        <label class="custom-control-label" for="kapac3">8 GB</label>
+                                    </div>
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" id="kapac4" name="kapac">
+                                        <label class="custom-control-label" for="kapac4">16 GB</label>
+                                    </div>
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" id="kapac5" name="kapac">
+                                        <label class="custom-control-label" for="kapac5">32 GB</label>
+                                    </div>
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" id="kapac6" name="kapac">
+                                        <label class="custom-control-label" for="kapac6">64 GB</label>
+                                    </div>
+
+                                    <h5 style="margin-top:25px">Memória típusa</h5>
+                                    <div class="custom-control custom-radio">
+                                        <input type="radio" class="custom-control-input" id="memtip0" name="memtip" value="DDR3">
+                                        <label class="custom-control-label" for="memtip0">DDR3</label>
+                                    </div>  
+                                    <div class="custom-control custom-radio">
+                                        <input type="radio" class="custom-control-input" id="memtip1" name="memtip" value="DDR4">
+                                        <label class="custom-control-label" for="memtip1">DDR4</label>
+                                    </div>
+                                </div>
+
+                                <h4 style="margin-top:25px">Hűtés</h4>
+                                <div style="margin-left:15px">
+                                    <h5>Felépítés</h5>
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" id="buildtype0" name="buildtype">
+                                        <label class="custom-control-label" for="buildtype0">Vízhűtés</label>
+                                    </div>
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" id="buildtype1" name="buildtype">
+                                        <label class="custom-control-label" for="buildtype1">Aktív</label>
+                                    </div>
+
+                                    <h5 style="margin-top:25px">Típus</h5>
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" id="coolertype0" name="coolertype">
+                                        <label class="custom-control-label" for="coolertype0">Ház</label>
+                                    </div>
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" id="coolertype1" name="coolertype">
+                                        <label class="custom-control-label" for="coolertype1">Processzor</label>
+                                    </div>
+                                </div>
+                                
+                                <h4 style="margin-top:25px">Tápegység</h4>
+                                <div style="margin-left:15px">
+                                    <h5>Teljesítmény</h5>
+                                    <div class="input-group mb-3">
+                                        <input type="number" class="form-control" placeholder="Minimum">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"> - </span>
+                                        </div>
+                                        <input type="number" class="form-control" placeholder="Maximum">
+                                    </div>
+                                    
+                                    <h5 style="margin-top:25px">Kábelezés</h5>
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" id="cable2" name="cable">
+                                        <label class="custom-control-label" for="cable2">Fix kábelezésű</label>
+                                    </div>
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" id="cable1" name="cable">
+                                        <label class="custom-control-label" for="cable1">Félmoduláris</label>
+                                    </div>
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" id="cable0" name="cable">
+                                        <label class="custom-control-label" for="cable0">Moduláris</label>
+                                    </div>
+                                </div>
+
+                                <h4 style="margin-top:25px">Videokártya</h4>
+                                <div style="margin-left:15px">
+                                    <h5>Memória mérete</h5>
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" id="videocardMemsize0" name="videocardMemsize">
+                                        <label class="custom-control-label" for="videocardMemsize0">1 GB</label>
+                                    </div>
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" id="videocardMemsize1" name="videocardMemsize">
+                                        <label class="custom-control-label" for="videocardMemsize1">2 GB</label>
+                                    </div>
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" id="videocardMemsize2" name="videocardMemsize">
+                                        <label class="custom-control-label" for="videocardMemsize2">3 GB</label>
+                                    </div>
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" id="videocardMemsize3" name="videocardMemsize">
+                                        <label class="custom-control-label" for="videocardMemsize3">4 GB</label>
+                                    </div>
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" id="videocardMemsize4" name="videocardMemsize">
+                                        <label class="custom-control-label" for="videocardMemsize4">6 GB</label>
+                                    </div>
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" id="videocardMemsize5" name="videocardMemsize">
+                                        <label class="custom-control-label" for="videocardMemsize5">8 GB</label>
+                                    </div>
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" id="videocardMemsize6" name="videocardMemsize">
+                                        <label class="custom-control-label" for="videocardMemsize6">>8 GB</label>
+                                    </div>
+
+                                    <h5 style="margin-top:25px">Hűtés típusa</h5>
+                                    <div class="custom-control custom-radio">
+                                        <input type="radio" class="custom-control-input" id="videocardCoolertype0" name="videocardCoolertype" value="Aktív">
+                                        <label class="custom-control-label" for="videocardCoolertype0">Aktív</label>
+                                    </div>  
+                                    <div class="custom-control custom-radio">
+                                        <input type="radio" class="custom-control-input" id="videocardCoolertype1" name="videocardCoolertype" value="Passzív">
+                                        <label class="custom-control-label" for="videocardCoolertype1">Passzív</label>
+                                    </div>
+                                    <div class="custom-control custom-radio">
+                                        <input type="radio" class="custom-control-input" id="videocardCoolertype2" name="videocardCoolertype" value="Vízhűtés">
+                                        <label class="custom-control-label" for="videocardCoolertype2">Vízhűtés</label>
+                                    </div>
+                                </div>
+
+                                <h4 style="margin-top:25px">HDD</h4>
+                                <div style="margin-left:15px">
+                                    <h5>Kapacitás</h5>
+                                    <div class="input-group mb-3">
+                                        <input type="number" class="form-control" placeholder="Minimum">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"> - </span>
+                                        </div>
+                                        <input type="number" class="form-control" placeholder="Maximum">
+                                    </div>
+                                    
+                                    <h5 style="margin-top:25px">Fordulatszám</h5>
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" id="hddRpm0" name="hddRpm">
+                                        <label class="custom-control-label" for="hddRpm0">5400 rpm</label>
+                                    </div>
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" id="hddRpm1" name="hddRpm">
+                                        <label class="custom-control-label" for="hddRpm1">7200 rpm</label>
+                                    </div>
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" id="hddRpm2" name="hddRpm">
+                                        <label class="custom-control-label" for="hddRpm2">10000 rpm</label>
+                                    </div>
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" id="hddRpm3" name="hddRpm">
+                                        <label class="custom-control-label" for="hddRpm3">15000 rpm</label>
+                                    </div>
+
+                                    <h5 style="margin-top:25px">Átmérő</h5>
+                                    <div class="custom-control custom-radio">
+                                        <input type="radio" class="custom-control-input" id="hddSize0" name="hddSize" value="2,5 inch">
+                                        <label class="custom-control-label" for="hddSize0">2,5 inch</label>
+                                    </div>  
+                                    <div class="custom-control custom-radio">
+                                        <input type="radio" class="custom-control-input" id="hddSize1" name="hddSize" value="3,5 inch">
+                                        <label class="custom-control-label" for="hddSize1">3,5 inch</label>
+                                    </div>
+                                </div>
+
+                                <h4 style="margin-top:25px">SSD</h4>
+                                <div style="margin-left:15px">
+                                    <h5>Kapacitás</h5>
+                                    <div class="input-group mb-3">
+                                        <input type="number" class="form-control" placeholder="Minimum">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"> - </span>
+                                        </div>
+                                        <input type="number" class="form-control" placeholder="Maximum">
+                                    </div>
+                                    
+                                    <h5 style="margin-top:25px">NAND flash típusa</h5>
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" id="ssdNandType0" name="ssdNandType">
+                                        <label class="custom-control-label" for="ssdNandType0">SLC</label>
+                                    </div>
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" id="ssdNandType1" name="ssdNandType">
+                                        <label class="custom-control-label" for="ssdNandType1">MLC</label>
+                                    </div>
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" id="ssdNandType2" name="ssdNandType">
+                                        <label class="custom-control-label" for="ssdNandType2">TLC</label>
+                                    </div>
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" id="ssdNandType3" name="ssdNandType">
+                                        <label class="custom-control-label" for="ssdNandType3">3D XPoint</label>
+                                    </div>
+
+                                    <h5 style="margin-top:25px">Típus</h5>
+                                    <div class="custom-control custom-radio">
+                                        <input type="radio" class="custom-control-input" id="ssdtype0" name="ssdtype" value="2,5 inch">
+                                        <label class="custom-control-label" for="ssdtype0">2,5 inch</label>
+                                    </div>  
+                                    <div class="custom-control custom-radio">
+                                        <input type="radio" class="custom-control-input" id="ssdtype1" name="ssdtype" value="M.2">
+                                        <label class="custom-control-label" for="ssdtype1">M.2</label>
+                                    </div>
+                                    <div class="custom-control custom-radio">
+                                        <input type="radio" class="custom-control-input" id="ssdtype2" name="ssdtype" value="NVMe">
+                                        <label class="custom-control-label" for="ssdtype2">NVMe</label>
+                                    </div>
+                                </div>
+
+                                <h4 style="margin-top:25px">Optikai meghajtó</h4>
+                                    <div style="margin-left:15px">
+                                    <h5>Típus</h5>
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" id="oddtype0" name="oddtype" value="cd">
+                                        <label class="custom-control-label" for="oddtype0">Cd író/olvasó</label>
+                                    </div>
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" id="oddtype1" name="oddtype" value="dvd">
+                                        <label class="custom-control-label" for="oddtype1">DVD író/olvasó</label>
+                                    </div>
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" id="oddtype2" name="oddtype" value="bluray">
+                                        <label class="custom-control-label" for="oddtype2">Blu-ray író/olvasó</label>
+                                    </div>
+
+                                    <h5 style="margin-top:25px">Kialakítás</h5>
+                                    <div class="custom-control custom-radio">
+                                        <input type="radio" class="custom-control-input" id="oddkind0" name="oddkind" value="kulso">
+                                        <label class="custom-control-label" for="oddkind0">Belső</label>
+                                    </div>  
+                                    <div class="custom-control custom-radio">
+                                        <input type="radio" class="custom-control-input" id="oddkind1" name="oddkind" value="belso">
+                                        <label class="custom-control-label" for="oddkind1">Külső</label>
+                                    </div>
+                                </div>
+
+                            </form>
+                        </div>
+                      `
         })
-        Vue.component('kompl',{
-            template: '<div>Komplett géphez tartozó szűrők listája.</div>'
-        })
-        
+
         var filter = new Vue({
             el: '#listOfFilters',
-            data:{
-                whichFilter : 'alaplap'
+            data: {
+                whichFilter: 'alaplap'
             }
         });
 
