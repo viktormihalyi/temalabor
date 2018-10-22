@@ -1,5 +1,5 @@
 {
-    "name": "hardverapro",
+    "spider_name": "hardverapro",
     "enabled": true,
 
     "starting_urls": [
@@ -11,45 +11,41 @@
 
     "methods": [
         {
-            "name": "visit_products",
+            "method_name": "visit_products",
+            "main_method": true,
             "follow_links": [
                 {
-                    "selector": "product_urls",
+                    "selector_name": "product_urls",
                     "call_method": "collect_data"
                 },
                 {
-                    "selector": "next_page_url",
+                    "selector_name": "next_page_url",
                     "call_method": "visit_products"
                 }
             ]
         },
         {
-            "name": "collect_data",
-            "data_collectors": ["termek"]
+            "method_name": "collect_data",
+            "call_collectors": [ "termek" ]
         }
     ],
 
     "selectors": [
         {
-            "name": "next_page_url",
+            "selector_name": "next_page_url",
             "max": 4,
             "type": "xpath",
             "command": "//*[@id=\"forum-nav-top\"]/ul[1]/li[4]/a/@href"
         },
         {
-            "name": "product_urls",
+            "selector_name": "product_urls",
             "type": "css",
             "command": "[data-uadid] > a::attr(href)"
         },
         {
-            "name": "item_title",
-            "type": "css",
-            "command": "//*[@id=\"center\"]/div[1]/div[1]/h1/text()"
-        },
-        {
-            "name": "item_price",
+            "selector_name": "item_title",
             "type": "xpath",
-            "command": "TODO"
+            "command": "//*[@id=\"center\"]/div[1]/div[1]/h1/text()"
         }
     ],
 
@@ -59,13 +55,8 @@
             "properties": [
                 {
                     "name": "title",
-                    "selector": "item_title",
+                    "selector_name": "item_title",
                     "type": "text"
-                },
-                {
-                    "name": "price",
-                    "selector": "item_price",
-                    "type": "number"
                 }
             ]
         }
