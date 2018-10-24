@@ -1,5 +1,6 @@
 import logging
 import scrapy
+import time
 
 from tags import *
 from selector_parser import parse_selector
@@ -37,7 +38,11 @@ class ConfigurationSpider(scrapy.Spider):
             collector = self.get_collector_by_name(collector_name)
 
             # collect properties here
-            item = {}
+            item = {
+                'url': response.url,
+                'timestamp': time.time(),
+                'site': self.name
+            }
 
             # parse each property, and put it back to `item`
             for prop in collector[TAG_PROPERTIES]:
@@ -45,15 +50,14 @@ class ConfigurationSpider(scrapy.Spider):
                 prop_type = prop['type']
 
                 prop_selector = self.get_selector_by_name(prop[TAG_SELECTOR])
-                prop_value = parse_selector(response, prop_selector, one=True)
+                prop_value = parse_selector(response, prop_selector, prop_type, one=True)
 
-                item[prop_saved_name] = {
-                    'value': prop_value,
-                    'type':  prop_type
-                }
+                item[prop_saved_name] = prop_value
 
                 logger.info('parsed item:')
-                logger.info(item)
+
+            item['url'] = response.url
+            logger.info(item)
 
     def follow_links(self, response, called_method):
         for link in called_method[TAG_FOLLOW_LINKS]:
@@ -65,7 +69,7 @@ class ConfigurationSpider(scrapy.Spider):
             link_method = link[TAG_CALL_METHOD]
 
             # parse selectors
-            actual_urls = parse_selector(response, selector_for_link)
+            actual_urls = parse_selector(response, selector_for_link, 'raw')
 
             # generate scrapy.Requests for the urls, with the given callback method
             for url in actual_urls:

@@ -1,15 +1,22 @@
 import re
+from bs4 import BeautifulSoup
+
+SELECTOR_TYPES = ['css', 'xpath', 'regex']
+PARSER_TYPES = ['text', 'number', 'raw']
 
 
-SELECTOR_PARSER_TYPES = ['css', 'xpath', 'regex']
+def parse_selector(response, selector, property_type, one=False):
+    selection = _parse_selector(response, selector['type'], selector['command'], one)
 
+    if one:
+        return parse_text_with_type(selection, property_type)
 
-def parse_selector(response, selector, one=False):
-    return _parse_selector(response, selector['type'], selector['command'], one)
+    else:
+        return [parse_text_with_type(selected, property_type) for selected in selection]
 
 
 def _parse_selector(response, selector_type, selector_command, one=False):
-    if selector_type not in SELECTOR_PARSER_TYPES:
+    if selector_type not in SELECTOR_TYPES:
         print('ERROR: bad selector type "{}"'.format(selector_type))
         return None
 
@@ -35,4 +42,28 @@ def _parse_selector(response, selector_type, selector_command, one=False):
         else:
             return None
 
+    return None
+
+
+def parse_text_with_type(parsed_text, property_type):
+    if property_type not in PARSER_TYPES:
+        print('ERROR: bad property type "{}"'.format(property_type))
+        return None
+
+    if property_type == 'text':
+        bs_obj = BeautifulSoup(parsed_text, 'html.parser')
+        rows = ''.join([str(s).replace('\n', ' ') for s in bs_obj.contents])
+        bs_rows = BeautifulSoup(rows, 'html.parser')
+        nice_text = bs_rows.get_text(separator='\n')
+        return nice_text.strip()
+
+    elif property_type == 'number':
+        bs_obj = BeautifulSoup(parsed_text, 'html.parser')
+        # select all numbers from a string
+        return int(''.join(c for c in bs_obj.text if c.isdigit()))
+
+    elif property_type == 'raw':
+        return parsed_text
+
+    print('nothing found :(')
     return None

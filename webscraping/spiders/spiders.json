@@ -46,6 +46,21 @@
             "selector_name": "item_title",
             "type": "xpath",
             "command": "//*[@id=\"center\"]/div[1]/div[1]/h1/text()"
+        },
+        {
+            "selector_name": "item_desc",
+            "type": "xpath",
+            "command": "//*[@id=\"center\"]/div[1]/div[6]/div"
+        },
+        {
+            "selector_name": "item_price",
+            "type": "xpath",
+            "command": "///*[@id=\"center\"]/div[1]/div[5]/div[1]/h2"
+        },
+        {
+            "selector_name": "item_image_url",
+            "type": "xpath",
+            "command": "concat('https://hardverapro.hu',//*[@id=\"uad-images-carousel\"]/div/div/a/img/@src)"
         }
     ],
 
@@ -57,6 +72,21 @@
                     "name": "title",
                     "selector_name": "item_title",
                     "type": "text"
+                },
+                {
+                    "name": "description",
+                    "selector_name": "item_desc",
+                    "type": "text"
+                },
+                {
+                    "name": "price",
+                    "selector_name": "item_price",
+                    "type": "number"
+                },
+                {
+                    "name": "image_url",
+                    "selector_name": "item_image_url",
+                    "type": "raw"
                 }
             ]
         }
