@@ -49,27 +49,23 @@ class ConfigurationSpider(scrapy.Spider):
                 prop_saved_name = prop[TAG_PROPERTY_NAME]
                 prop_type = prop['type']
 
-                prop_selector = self.get_selector_by_name(prop[TAG_SELECTOR])
-                prop_value = parse_selector(response, prop_selector, prop_type, one=True)
+                prop_selector = prop[TAG_SELECTOR]
+                prop_value = parse_selector(response, prop_selector, one=True)
 
                 item[prop_saved_name] = prop_value
 
-                logger.info('parsed item:')
-
-            item['url'] = response.url
+            logger.info('parsed item:')
             logger.info(item)
 
     def follow_links(self, response, called_method):
         for link in called_method[TAG_FOLLOW_LINKS]:
 
-            # selector for the urls
-            selector_for_link = self.get_selector_by_name(link[TAG_SELECTOR])
+            # urls which will be parsed next
+            selector_for_link = link[TAG_SELECTOR]
+            actual_urls = parse_selector(response, selector_for_link)
 
             # this method will be called on the selected urls
             link_method = link[TAG_CALL_METHOD]
-
-            # parse selectors
-            actual_urls = parse_selector(response, selector_for_link, 'raw')
 
             # generate scrapy.Requests for the urls, with the given callback method
             for url in actual_urls:

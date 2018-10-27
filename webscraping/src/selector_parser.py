@@ -4,15 +4,21 @@ from bs4 import BeautifulSoup
 SELECTOR_TYPES = ['css', 'xpath', 'regex']
 PARSER_TYPES = ['text', 'number', 'raw']
 
+SELECTOR_TYPE = 'type'
+SELECTOR_COMMAND = 'command'
+SELECTOR_PARSE_AS = 'parse_as'
 
-def parse_selector(response, selector, property_type, one=False):
-    selection = _parse_selector(response, selector['type'], selector['command'], one)
+PARSE_AS_DEFAULT = 'raw'
+
+def parse_selector(response, selector, one=False):
+    selection = _parse_selector(response, selector[SELECTOR_TYPE], selector[SELECTOR_COMMAND], one)
+
+    parser_type = selector[SELECTOR_PARSE_AS] if SELECTOR_PARSE_AS in selector else PARSE_AS_DEFAULT
 
     if one:
-        return parse_text_with_type(selection, property_type)
-
+        return parse_text_with_type(selection, parser_type)
     else:
-        return [parse_text_with_type(selected, property_type) for selected in selection]
+        return [parse_text_with_type(s, parser_type) for s in selection]
 
 
 def _parse_selector(response, selector_type, selector_command, one=False):

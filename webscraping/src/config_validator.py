@@ -6,27 +6,14 @@ ENABLED_DEFAULT_VALUE = True
 logger = logging.getLogger(__name__)
 
 
-def _get_referenced_selectors_in_method(method):
-    if TAG_FOLLOW_LINKS in method:
-        follow_links = method[TAG_FOLLOW_LINKS]
-        for link in follow_links:
-            yield link[TAG_SELECTOR]
-
-
-def _get_referenced_collectors_in_method(method):
+def __get_referenced_collectors_in_method(method):
     if TAG_CALL_COLLECTORS in method:
         data_collectors = method[TAG_CALL_COLLECTORS]
         for collector in data_collectors:
             yield collector
 
 
-def _get_referenced_selectors_in_collector(collector):
-    for prop in collector[TAG_PROPERTIES]:
-        if TAG_SELECTOR in prop:
-            yield prop[TAG_SELECTOR]
-
-
-def _get_referenced_methods(method):
+def __get_referenced_methods(method):
     if TAG_FOLLOW_LINKS in method:
         called_methods = method[TAG_FOLLOW_LINKS]
         for link in called_methods:
@@ -39,7 +26,7 @@ class ErrorCounter:
         self.warnings = 0
 
 
-def _check_ids(possible_ids, referenced_ids, warns_errors, type_='id'):
+def __check_ids(possible_ids, referenced_ids, warns_errors, type_='id'):
     for ref_id in referenced_ids:
         if ref_id not in possible_ids:
             logger.error('{} "{}" is not defined'.format(type_, ref_id))
@@ -58,18 +45,31 @@ def _check_ids(possible_ids, referenced_ids, warns_errors, type_='id'):
             warns_errors.warnings += 1
 
 
+def __get_spider_name(spider_config):
+    if TAG_SPIDER_NAME not in spider_config:
+        return None
+    return spider_config[TAG_SPIDER_NAME]
+
+
+def __is_enabled(spider_config):
+    if TAG_ENABLED in spider_config:
+        return spider_config[TAG_ENABLED]
+    else:
+        return ENABLED_DEFAULT_VALUE
+
+
 def validate_spider_configuration(spider_config):
     logger.info('validating spider config')
 
     warns_errors = ErrorCounter()
 
-    if TAG_SPIDER_NAME not in spider_config:
+    # must have a 'name'
+    spider_name = __get_spider_name(spider_config)
+    if not spider_name:
         logger.error('no name defined, exiting')
         return False
 
-    spider_name = spider_config[TAG_SPIDER_NAME]
-
-    enabled = spider_config[TAG_ENABLED] if TAG_ENABLED in spider_config else ENABLED_DEFAULT_VALUE
+    enabled = __is_enabled(spider_config)
 
     # skip validation if spider is disabled
     if not enabled:
@@ -83,7 +83,6 @@ def validate_spider_configuration(spider_config):
         return False
 
     # collect referenced names here
-    selectors_referenced = []
     collectors_referenced = []
     methods_referenced = []
 
@@ -100,32 +99,19 @@ def validate_spider_configuration(spider_config):
         warns_errors.errors += 1
     else:
         for method in spider_config[TAG_METHODS]:
-            for ref_selector in _get_referenced_selectors_in_method(method):
-                selectors_referenced.append(ref_selector)
-
-            for ref_collector in _get_referenced_collectors_in_method(method):
+            for ref_collector in __get_referenced_collectors_in_method(method):
                 collectors_referenced.append(ref_collector)
 
-            for ref_method in _get_referenced_methods(method):
+            for ref_method in __get_referenced_methods(method):
                 methods_referenced.append(ref_method)
 
-    # collect referenced names in data collectors
-    if TAG_COLLECTORS not in spider_config:
-        logger.warning('no data collectors defined')
-    else:
-        for collector in spider_config[TAG_COLLECTORS]:
-            for ref_selector in _get_referenced_selectors_in_collector(collector):
-                selectors_referenced.append(ref_selector)
-
     # defined selector, method and data collector names
-    selector_names = [sel[TAG_SELECTOR_NAME] for sel in spider_config[TAG_SELECTORS]]
     collector_names = [coll[TAG_COLLECTOR_NAME] for coll in spider_config[TAG_COLLECTORS]]
     method_names = [method[TAG_METHOD_NAME] for method in spider_config[TAG_METHODS]]
 
     # check for bad names
-    _check_ids(selector_names, selectors_referenced, warns_errors, type_='selector')
-    _check_ids(collector_names, collectors_referenced, warns_errors, type_='data collector')
-    _check_ids(method_names, methods_referenced, warns_errors, type_='method')
+    __check_ids(collector_names, collectors_referenced, warns_errors, type_='data collector')
+    __check_ids(method_names, methods_referenced, warns_errors, type_='method')
 
     if warns_errors.errors > 0:
         logger.info('{} errors found'.format(warns_errors.errors))
