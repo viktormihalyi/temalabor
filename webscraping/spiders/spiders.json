@@ -12,7 +12,6 @@
     "methods": [
         {
             "method_name": "visit_products",
-            "main_method": true,
             "follow_links": [
                 {
                     "selector": {

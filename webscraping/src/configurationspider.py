@@ -1,6 +1,8 @@
 import logging
 import scrapy
 import time
+from typing import List
+from typing import Dict
 
 from tags import *
 from selector_parser import parse_selector
@@ -8,34 +10,44 @@ from selector_parser import parse_selector
 logger = logging.getLogger(__name__)
 
 
-def _get_element_by_tag(list_of_elements, value, tag='name'):
+def _get_element_by_tag(list_of_elements: List, value, tag: str):
     for el in list_of_elements:
         if el[tag] == value:
             return el
 
 
 class ConfigurationSpider(scrapy.Spider):
-    def __init__(self, name=None, **kwargs):
+
+    # override
+    def __init__(self, **kwargs):
         super().__init__(kwargs['config'][TAG_SPIDER_NAME], **kwargs)
         self.config = kwargs['config']
 
+    # override
+    def parse(self, response):
+        pass
+
+    # override
     def start_requests(self):
+        """Returns the starting requests. This is like a main method."""
         for starting_url in self.config['starting_urls']:
             for url in starting_url['urls']:
-                yield scrapy.Request(url, callback=self.parse_item_with_method(starting_url['method']))
+                yield scrapy.Request(url, callback=self.parse_with_method(starting_url['method']))
 
-    def get_method_by_name(self, method_name):
+    def __get_method_by_name(self, method_name: str):
+        """Finds and returns a method given its name."""
         return _get_element_by_tag(self.config[TAG_METHODS], method_name, tag=TAG_METHOD_NAME)
 
-    def get_collector_by_name(self, collector_name):
+    def __get_collector_by_name(self, collector_name: str):
+        """Finds and returns a data collector given its name."""
         return _get_element_by_tag(self.config[TAG_COLLECTORS], collector_name, tag=TAG_COLLECTOR_NAME)
 
-    def get_selector_by_name(self, selector_name):
-        return _get_element_by_tag(self.config[TAG_SELECTORS], selector_name, tag=TAG_SELECTOR_NAME)
+    def parse_data_collectors(self, response, collector_names: List[str]) -> List[Dict]:
+        """Execute all collectors on a scrapy.Response object and return the collceted data as items."""
+        items = []
 
-    def parse_data_collectors(self, response, called_method):
-        for collector_name in called_method[TAG_CALL_COLLECTORS]:
-            collector = self.get_collector_by_name(collector_name)
+        for collector_name in collector_names:
+            collector = self.__get_collector_by_name(collector_name)
 
             # collect properties here
             item = {
@@ -46,19 +58,21 @@ class ConfigurationSpider(scrapy.Spider):
 
             # parse each property, and put it back to `item`
             for prop in collector[TAG_PROPERTIES]:
-                prop_saved_name = prop[TAG_PROPERTY_NAME]
-                prop_type = prop['type']
-
                 prop_selector = prop[TAG_SELECTOR]
                 prop_value = parse_selector(response, prop_selector, one=True)
 
+                prop_saved_name = prop[TAG_PROPERTY_NAME]
                 item[prop_saved_name] = prop_value
 
             logger.info('parsed item:')
             logger.info(item)
+            items.append(item)
 
-    def follow_links(self, response, called_method):
-        for link in called_method[TAG_FOLLOW_LINKS]:
+        return items
+
+    def follow_links(self, response, follow_links: List[Dict]) -> List[scrapy.Request]:
+        """Selects all links on a scrapy.Response, and turns them into scrapy.Request objects."""
+        for link in follow_links:
 
             # urls which will be parsed next
             selector_for_link = link[TAG_SELECTOR]
@@ -70,18 +84,23 @@ class ConfigurationSpider(scrapy.Spider):
             # generate scrapy.Requests for the urls, with the given callback method
             for url in actual_urls:
                 yield scrapy.Request(response.urljoin(url),
-                                     callback=self.parse_item_with_method(link_method))
+                                     callback=self.parse_with_method(link_method))
 
-    def parse_item_with_method(self, method_name):
+    def parse_with_method(self, method_name: str):
+        """Returns a method that will parse a response."""
+
         def parse_item(response):
-            logger.info('response for method "{}"'.format(method_name))
-            called_method = self.get_method_by_name(method_name)
+            logger.info('response (len: {}) for method "{}"'.format(len(response.text), method_name))
+            called_method = self.__get_method_by_name(method_name)
+
+            # methods can collect data and/or follow links
 
             if TAG_CALL_COLLECTORS in called_method:
-                self.parse_data_collectors(response, called_method)
+                items = self.parse_data_collectors(response, called_method[TAG_CALL_COLLECTORS])
+                # TODO put items in db
 
             if TAG_FOLLOW_LINKS in called_method:
-                return self.follow_links(response, called_method)
+                # returning the scrapy.Requests to put them in a queue
+                return self.follow_links(response, called_method[TAG_FOLLOW_LINKS])
 
         return parse_item
-

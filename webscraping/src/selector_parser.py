@@ -10,6 +10,7 @@ SELECTOR_PARSE_AS = 'parse_as'
 
 PARSE_AS_DEFAULT = 'raw'
 
+
 def parse_selector(response, selector, one=False):
     selection = _parse_selector(response, selector[SELECTOR_TYPE], selector[SELECTOR_COMMAND], one)
 
