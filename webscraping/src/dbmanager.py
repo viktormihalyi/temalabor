@@ -1,6 +1,6 @@
+import hashlib
 from elasticsearch import Elasticsearch
 
-import hashlib
 
 class DbManager:
 

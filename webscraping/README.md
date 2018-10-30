@@ -1,5 +1,5 @@
 ## with docker
-```docker
+```bash
 docker-compose up -d
 ```
 

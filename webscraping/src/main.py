@@ -4,11 +4,9 @@ import json
 from scrapy.crawler import CrawlerProcess
 from scrapy.utils.log import configure_logging
 from scrapy.utils.project import get_project_settings
-import scrapy.utils.project
 
 from config_validator import validate_spider_configuration
 from configurationspider import ConfigurationSpider
-
 from dbmanager import DbManager
 
 if __name__ == '__main__':
