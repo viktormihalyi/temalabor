@@ -44,7 +44,7 @@
                     "name": "title",
                     "selector": {
                         "type": "xpath",
-                        "command": "//*[@id=\"center\"]/div[1]/div[1]/h1/text()",
+                        "command": "//*[@id=\"center\"]/div[1]/div[1]/h1",
                         "parse_as": "text"
                     }
                 },

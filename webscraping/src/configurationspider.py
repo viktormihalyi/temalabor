@@ -22,6 +22,7 @@ class ConfigurationSpider(scrapy.Spider):
     def __init__(self, **kwargs):
         super().__init__(kwargs['config'][TAG_SPIDER_NAME], **kwargs)
         self.config = kwargs['config']
+        self.db = self.config['db']
 
     # override
     def parse(self, response):
@@ -64,8 +65,6 @@ class ConfigurationSpider(scrapy.Spider):
                 prop_saved_name = prop[TAG_PROPERTY_NAME]
                 item[prop_saved_name] = prop_value
 
-            logger.info('parsed item:')
-            logger.info(item)
             items.append(item)
 
         return items
@@ -97,7 +96,8 @@ class ConfigurationSpider(scrapy.Spider):
 
             if TAG_CALL_COLLECTORS in called_method:
                 items = self.parse_data_collectors(response, called_method[TAG_CALL_COLLECTORS])
-                # TODO put items in db
+                for item in items:
+                    self.db.put(item)
 
             if TAG_FOLLOW_LINKS in called_method:
                 # returning the scrapy.Requests to put them in a queue
