@@ -32,7 +32,7 @@ if __name__ == '__main__':
         # terminate if the validation fails
         success = validate_spider_configuration(spider_config)
         if not success:
-            exit()
+            continue
 
         runner.crawl(ConfigurationSpider, config=spider_config)
 

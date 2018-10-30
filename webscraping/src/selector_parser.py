@@ -7,6 +7,7 @@ PARSER_TYPES = ['text', 'number', 'raw']
 SELECTOR_TYPE = 'type'
 SELECTOR_COMMAND = 'command'
 SELECTOR_PARSE_AS = 'parse_as'
+SELECTOR_MAX = 'max'
 
 PARSE_AS_DEFAULT = 'raw'
 
@@ -18,8 +19,15 @@ def parse_selector(response, selector, one=False):
 
     if one:
         return parse_text_with_type(selection, parser_type)
+
     else:
-        return [parse_text_with_type(s, parser_type) for s in selection]
+        all_parsed_text = [parse_text_with_type(s, parser_type) for s in selection]
+
+        if SELECTOR_MAX in selector:
+            max_number = int(selector[SELECTOR_MAX])
+            return all_parsed_text[:max_number]
+        else:
+            return all_parsed_text
 
 
 def _parse_selector(response, selector_type, selector_command, one=False):
