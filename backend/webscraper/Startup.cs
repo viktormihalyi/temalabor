@@ -41,7 +41,8 @@ namespace webscraper
             {
                 app.UseHsts();
             }
-
+	    app.UseCors(builder =>
+       			builder.WithOrigins("http://46.101.165.79"));
             app.UseHttpsRedirection();
             app.UseMvc();
         }
