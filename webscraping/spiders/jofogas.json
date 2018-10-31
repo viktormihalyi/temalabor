@@ -1,0 +1,82 @@
+{
+    "spider_name": "jofogas",
+    "enabled": false,
+
+    "starting_urls": [
+        {
+            "urls": ["https://www.jofogas.hu/magyarorszag/muszaki-cikkek-elektronika"],
+            "method": "visit_products"
+        }
+    ],
+
+    "methods": [
+        {
+            "method_name": "visit_products",
+            "follow_links": [
+                {
+                    "selector": {
+                        "type": "css",
+                        "command": "div[itemprop=\"itemListElement\"] a::attr(href)"
+                    },
+                    "call_method": "collect_data"
+                },
+                {
+                    "selector": {
+                        "type": "xpath",
+                        "command": "//a[contains(@class, \"jofogasicon-right\")]/@href"
+                    },
+                    "call_method": "visit_products"
+                }
+            ]
+        },
+        {
+            "method_name": "collect_data",
+            "call_collectors": [ "termek" ]
+        }
+    ],
+
+    "data_collectors": [
+        {
+            "name": "termek",
+            "properties": [
+                {
+                    "name": "title",
+                    "selector": {
+                        "type": "xpath",
+                        "command": "//meta[@property=\"og:title\"]/@content"
+                    }
+                },
+                {
+                    "name": "category",
+                    "selector": {
+                        "type": "xpath",
+                        "command": "//div[@itemprop=\"category\"]/span[2]",
+                        "parse_as": "text"
+                    }
+                },
+                {
+                    "name": "description",
+                    "selector": {
+                        "type": "xpath",
+                        "command": "//meta[@property=\"og:description\"]/@content"
+                    }
+                },
+                {
+                    "name": "price",
+                    "selector": {
+                        "type": "regex",
+                        "command": "package_price=([0-9]+)",
+                        "parse_as": "number"
+                    }
+                },
+                {
+                    "name": "image_url",
+                    "selector": {
+                        "type": "xpath",
+                        "command": "//meta[@property=\"og:image\"]/@content"
+                    }
+                }
+            ]
+        }
+    ]
+}
