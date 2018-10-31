@@ -3,14 +3,15 @@
 
 <head>
     <meta charset="utf-8">
-    <link rel="stylesheet" type="text/css" href="style.css">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
         crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="style.css">
 
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script src="https://unpkg.com/http-vue-loader"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <title>UsedPC</title>
 </head>
 
@@ -20,7 +21,7 @@
     </div>
     <div class="container-fluid">
         <div class="row">
-            <div id="listOfFilters" class="col-sm-3" style="background-color:#aaa;min-height:1000px;padding-bottom: 20px;">
+            <div id="listOfFilters" class="col-sm-3">
                 <div>
                     <form>
                         <div id="filtertopbar">
@@ -32,11 +33,46 @@
                     </form>
                 </div>
             </div>
-            <div class="col-sm-9" style="background-color:#ccc;min-height:1000px;">Megjelenített találatok</div>
+            <div id="results" class="col-sm-9">
+                <div class="adCard" v-for="value in advertisements">
+                    <div class="title_">{{value.title}}</div>
+                        <div class="row">
+                            <div class="col-sm-2"><img class="img-fluid picture" src="tmpPic.jpg" alt="Hirdetés képe"></div>
+                            <div class="priceN col-sm-10">
+                                <div style="margin-top:10px;">Ár: <span class="priceV">{{value.price}} Ft</span><br></div>
+                                Link: <a v-bind:href="value.url" target="_blank" class="urlV">{{value.url}}</a><br>
+                                <div style="margin-top:10px;">Ellenőrizve: <span class="checkV">{{calcScrapedTime(value.timeStamp)}} napja</span></div>
+                            </div>
+                        </div>
+                    <div style="text-align:justify">{{value.description}}</div>
+                </div>
+            </div>
         </div>
     </div>
 
     <script type="text/javascript">
+        new Vue({
+            el: '#results',
+            data() {
+                return {
+                    advertisements: null
+                }
+            },
+            methods:{
+                calcScrapedTime: function (timestmp){
+                    var date1 = new Date(timestmp*1000);
+                    var date2 = new Date();
+                    var timeDiff = Math.abs(date2.getTime() - date1.getTime());
+                    var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
+                    return diffDays;
+                }
+            },
+            mounted() {
+                axios
+                    .get('https://46.101.165.79:5001/api/product/search?category=alaplap')
+                    .then(response => (this.advertisements = response.data))
+            }
+        });
         new Vue({
             el: '#topbar',
             components: {

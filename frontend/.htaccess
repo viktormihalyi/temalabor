@@ -1,0 +1,2 @@
+# Always set these headers.
+Header always set Access-Control-Allow-Origin "*"

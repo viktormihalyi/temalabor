@@ -1,0 +1,76 @@
+{
+    "spider_name": "hardverapro",
+    "enabled": true,
+
+    "starting_urls": [
+        {
+            "urls": ["https://hardverapro.hu/aprok/index.html"],
+            "method": "visit_products"
+        }
+    ],
+
+    "methods": [
+        {
+            "method_name": "visit_products",
+            "follow_links": [
+                {
+                    "selector": {
+                        "type": "css",
+                        "command": "[data-uadid] > a::attr(href)"
+                    },
+                    "call_method": "collect_data"
+                },
+                {
+                    "selector": {
+                        "type": "xpath",
+                        "command": "//*[@id=\"forum-nav-top\"]/ul[1]/li[4]/a/@href"
+                    },
+                    "call_method": "visit_products"
+                }
+            ]
+        },
+        {
+            "method_name": "collect_data",
+            "call_collectors": [ "termek" ]
+        }
+    ],
+
+    "data_collectors": [
+        {
+            "name": "termek",
+            "properties": [
+                {
+                    "name": "title",
+                    "selector": {
+                        "type": "xpath",
+                        "command": "//*[@id=\"center\"]/div[1]/div[1]/h1",
+                        "parse_as": "text"
+                    }
+                },
+                {
+                    "name": "description",
+                    "selector": {
+                        "type": "xpath",
+                        "command": "//*[@id=\"center\"]/div[1]/div[6]/div",
+                        "parse_as": "text"
+                    }
+                },
+                {
+                    "name": "price",
+                    "selector": {
+                        "type": "xpath",
+                        "command": "///*[@id=\"center\"]/div[1]/div[5]/div[1]/h2",
+                        "parse_as": "number"
+                    }
+                },
+                {
+                    "name": "image_url",
+                    "selector": {
+                        "type": "xpath",
+                        "command": "concat('https://hardverapro.hu',//*[@id=\"uad-images-carousel\"]/div/div/a/img/@src)"
+                    }
+                }
+            ]
+        }
+    ]
+}
