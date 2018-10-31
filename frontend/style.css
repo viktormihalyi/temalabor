@@ -3,6 +3,7 @@
     margin: auto;
     vertical-align: middle;
 }
+
 .container-fluid{
     margin-left: auto;
     margin-right: auto;
@@ -17,4 +18,60 @@
 .complettList{
     margin-top: 25px;
     font-weight: bold;
+}
+
+#listOfFilters{
+    background-color:#b3b3b3;
+    min-height:1000px;
+    padding-bottom: 20px;
+}
+
+#results{
+    background-color:#ccc;
+    min-height:1000px;
+}
+
+.adCard{
+    padding:10px;
+    margin:10px;
+    background-color: #b3b3b3;
+}
+
+.title_{
+    font-weight: bold;
+    text-align: center;
+    margin-bottom:10px;
+}
+
+.picture{
+    margin:10px;
+}
+
+.priceN{
+    font-weight: bold;
+    margin-top:10px;
+}
+
+.priceV{
+    font-weight: normal;
+}
+
+.urlV{
+    font-weight: normal;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 230px;
+    display: inline-block;
+    position:relative;
+    top:6px;
+}
+
+.urlV:link, .urlV:visited, .urlV:hover, .urlV:active, .urlV{
+    text-decoration: underline;
+    color:#000;
+}
+
+.checkV{
+    font-weight: normal;
 }
