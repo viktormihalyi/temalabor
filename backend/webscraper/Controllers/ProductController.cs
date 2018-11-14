@@ -25,9 +25,9 @@ namespace webscraper.Controllers
         }
 
 
-        // GET api/products/name
+        // GET api/product/name
         [HttpGet("search")]
-        public async Task<IActionResult> Get(string category, string title)
+        public async Task<IActionResult> Get(string category, string title,int pageFrom = 0, int pageTo = 1, int pageSize = 20)
         {   
             
             QueryContainer qContainer = new QueryContainer();
@@ -48,7 +48,12 @@ namespace webscraper.Controllers
                 );
             }
            
-            var response = await _elasticClient.SearchAsync<Product>(s => s.Query(_ => qContainer));
+            var response = await _elasticClient.SearchAsync<Product>(s => s 
+                .Query(_ => qContainer)
+                .From(pageFrom*pageSize)
+                .Size((pageTo-pageFrom)*pageSize)
+            );
+
             var products = response.Documents;
 
             return Ok(products);
