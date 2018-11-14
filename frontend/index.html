@@ -40,7 +40,7 @@
         <div class="row">
             <div id="listOfFilters" class="col-sm-3">
                 <div>
-                    <form>
+                    <form id="filterFormItems">
                         <div>
                             <center><button class="btn btn-primary" style="margin:25px">Találatok szűrése</button></center>
                             <h5>Keresés</h5>
@@ -59,28 +59,18 @@
                                 <component v-bind:is="currComp"></component>
                             </template>
                             <template v-else>
-                                <h4 class="complettList">Alaplap</h4>
-                                <comp0></comp0>
-                                <h4 class="complettList">Processzor</h4>
-                                <comp1></comp1>
-                                <h4 class="complettList">RAM</h4>
-                                <comp2></comp2>
-                                <h4 class="complettList">Hűtés</h4>
-                                <comp3></comp3>
-                                <h4 class="complettList">Ház</h4>
-                                <comp4></comp4>
-                                <h4 class="complettList">Táp</h4>
-                                <comp5></comp5>
-                                <h4 class="complettList">Videokártya</h4>
-                                <comp6></comp6>
-                                <h4 class="complettList">HDD</h4>
-                                <comp7></comp7>
-                                <h4 class="complettList">SSD</h4>
-                                <comp8></comp8>
-                                <h4 class="complettList">Optikai meghajtó</h4>
-                                <comp9></comp9>
+                                <div v-for="item in linkToTop.items">
+                                    <template v-if="item.id!='comp10'">
+                                        <h4 class="complettList">{{item.value}}</h4>
+                                        <component v-bind:is="item.id"></component>
+                                    </template>
+                                </div>
                             </template>
                         </div>
+
+                        <input hidden id="pageFrom" type="number" name="pageFrom" class="form-control">
+                        <input hidden id="pageTo" type="number" name="pageTo" class="form-control">
+
                     </form>
                 </div>
             </div>
@@ -98,9 +88,11 @@
                     </div>
                     <div style="text-align:justify">{{value.description}}</div>
                 </div>
+                <div class="adCard" style="text-align: center">
+                    <button style="margin:5px;" @click="newPage(n)" name="ResultsFrom" v-for="n in Math.ceil(resultsLength/itemsPerPage)" class="btn btn-primary">{{n}}</button>
+                </div>
             </div>
         </div>
-    </div>
     </div>
 
     <script type="text/javascript">
@@ -132,7 +124,8 @@
             el: '#filtersList',
             data() {
                 return {
-                    currComp: "comp0"
+                    currComp: "comp0",
+                    linkToTop:topCategories
                 }
             },
             components: {
@@ -146,7 +139,6 @@
                 'comp7': httpVueLoader('vues/hdd.vue'),
                 'comp8': httpVueLoader('vues/ssd.vue'),
                 'comp9': httpVueLoader('vues/optic.vue'),
-                'comp10': httpVueLoader('vues/full.vue'),
             },
         });
         var results = new Vue({
@@ -154,6 +146,8 @@
             data() {
                 return {
                     advertisements: null,
+                    resultsLength:null,
+                    itemsPerPage:3
                 }
             },
             methods: {
@@ -164,13 +158,26 @@
                     var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
                     return diffDays;
                 },
-                updateData: function () {
+                newPage:function (n){
+                    document.getElementById("pageFrom").value = this.itemsPerPage*n-this.itemsPerPage;
+                    if (this.itemsPerPage*n<this.resultsLength)
+                        document.getElementById("pageTo").value = this.itemsPerPage*n;
+                    else 
+                        document.getElementById("pageTo").value = this.resultsLength;
+                    document.getElementById("filterFormItems").submit();
+                },
+                updateData:function(){
+                    var self = this;
                     axios
+                        //.get("alaplap.json")
                         .get(topCategories.items[filtersList.currComp.slice(4)].value + '.json')
-                        .then(response => (this.advertisements = response.data))
+                        .then(function (response){
+                            self.advertisements = response.data;
+                            self.resultsLength = self.advertisements.length;
+                        }); 
                 }
             },
-            mounted() {
+            mounted: function(){
                 this.updateData();
             }
         });
