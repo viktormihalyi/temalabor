@@ -1,10 +1,10 @@
 {
-    "spider_name": "hardverapro",
+    "spider_name": "vatera",
     "enabled": true,
 
     "starting_urls": [
         {
-            "urls": ["https://hardverapro.hu/aprok/index.html"],
+            "urls": ["https://www.vatera.hu/szamitastechnika/index_c159.html"],
             "method": "visit_products"
         }
     ],
@@ -16,7 +16,7 @@
                 {
                     "selector": {
                         "type": "css",
-                        "command": "[data-uadid] > a::attr(href)"
+                        "command": "a.itemlink::attr(href)"
                     },
                     "call_method": "collect_data"
                 },
@@ -43,7 +43,7 @@
                     "name": "title",
                     "selector": {
                         "type": "xpath",
-                        "command": "//*[@id=\"center\"]/div[1]/div[1]/h1",
+                        "command": "//*[@id=\"pvp-title-subtitle-box\"]",
                         "parse_as": "text"
                     }
                 },
@@ -51,7 +51,7 @@
                     "name": "category",
                     "selector": {
                         "type": "xpath",
-                        "command": "//*[@id=\"top\"]/div[3]/div/ol/li[4]/a",
+                        "command": "//*[@id=\"pvp-category-tree\"]/ul/li[3]/a/span",
                         "parse_as": "text"
                     }
                 },
@@ -59,7 +59,7 @@
                     "name": "description",
                     "selector": {
                         "type": "xpath",
-                        "command": "//*[@id=\"center\"]/div[1]/div[6]/div",
+                        "command": "//*[@id=\"pvp-product-description-box-tabs\"]",
                         "parse_as": "text"
                     }
                 },
@@ -67,7 +67,7 @@
                     "name": "price",
                     "selector": {
                         "type": "xpath",
-                        "command": "///*[@id=\"center\"]/div[1]/div[5]/div[1]/h2",
+                        "command": "//*[contains(@class, 'fix-product-price')]|//*[contains(@class, 'fixauction-min-price')]",
                         "parse_as": "number"
                     }
                 },
@@ -75,7 +75,7 @@
                     "name": "image_url",
                     "selector": {
                         "type": "xpath",
-                        "command": "concat('https://hardverapro.hu',//*[@id=\"uad-images-carousel\"]/div/div/a/img/@src)"
+                        "command": "//meta[@property=\"og:image\"]/@content"
                     }
                 }
             ]
