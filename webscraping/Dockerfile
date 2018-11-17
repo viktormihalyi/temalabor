@@ -6,4 +6,4 @@ RUN apk update \
     && pip3 install -r requirements.txt \
     && apk del build-base
 
-CMD python -m scrapy crawl hardverapro
+CMD python src/main.py
