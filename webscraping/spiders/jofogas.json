@@ -1,6 +1,6 @@
 {
     "spider_name": "jofogas",
-    "enabled": false,
+    "enabled": true,
 
     "starting_urls": [
         {

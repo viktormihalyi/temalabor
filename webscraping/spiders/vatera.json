@@ -23,7 +23,7 @@
                 {
                     "selector": {
                         "type": "xpath",
-                        "command": "//*[@id=\"forum-nav-top\"]/ul[1]/li[4]/a/@href"
+                        "command": "//img[@src=\"https://img-ssl.vatera.hu/images/search/arw_frw.gif\"]/../@href"
                     },
                     "call_method": "visit_products"
                 }
