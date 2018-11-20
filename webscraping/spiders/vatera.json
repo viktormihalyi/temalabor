@@ -51,7 +51,7 @@
                     "name": "category",
                     "selector": {
                         "type": "xpath",
-                        "command": "//*[@id=\"pvp-category-tree\"]/ul/li[3]/a/span",
+                        "command": "//*[@id=\"pvp-category-tree\"]/ul/li[4]/a/span|//*[@id=\"pvp-category-tree\"]/ul/li[3]/a/span",
                         "parse_as": "text"
                     }
                 },
