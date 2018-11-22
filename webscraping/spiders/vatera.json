@@ -67,7 +67,7 @@
                     "name": "price",
                     "selector": {
                         "type": "xpath",
-                        "command": "//*[contains(@class, 'fix-product-price')]|//*[contains(@class, 'fixauction-min-price')]",
+                        "command": "//*[contains(@class, 'fix-product-price')]|//*[contains(@class, 'fixauction-min-price')]|//*[contains(@class, 'auction-min-price')]",
                         "parse_as": "number"
                     }
                 },

@@ -1,9 +1,8 @@
 version: '3'
 services:
   webscraping:
+    build: .
     image: viktormihalyi/temalabor
-    depends_on:
-      - elasticsearch
 
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:6.4.2
