@@ -28,7 +28,7 @@
                 </button>
                 <div class="collapse navbar-collapse" id="collapsibleNavbar">
                     <ul class="navbar-nav categories">
-                        <li v-for="cat in categories" style="padding:10px" @click="changeCategory(cat)">
+                        <li v-for="cat in categories" @click="changeCategory(cat)">
                             <a v-if="cat == currentCategory" href="#" class="nav-link active">
                                 {{cat.name}}
                             </a>
