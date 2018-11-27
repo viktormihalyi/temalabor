@@ -48,6 +48,14 @@
                     }
                 },
                 {
+                    "name": "category",
+                    "selector": {
+                        "type": "xpath",
+                        "command": "//*[@id=\"top\"]/div[3]/div/ol/li[4]/a",
+                        "parse_as": "text"
+                    }
+                },
+                {
                     "name": "description",
                     "selector": {
                         "type": "xpath",

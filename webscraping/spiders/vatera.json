@@ -1,10 +1,10 @@
 {
-    "spider_name": "jofogas",
+    "spider_name": "vatera",
     "enabled": true,
 
     "starting_urls": [
         {
-            "urls": ["https://www.jofogas.hu/magyarorszag/muszaki-cikkek-elektronika"],
+            "urls": ["https://www.vatera.hu/szamitastechnika/index_c159.html"],
             "method": "visit_products"
         }
     ],
@@ -16,14 +16,14 @@
                 {
                     "selector": {
                         "type": "css",
-                        "command": "div[itemprop=\"itemListElement\"] a::attr(href)"
+                        "command": "a.itemlink::attr(href)"
                     },
                     "call_method": "collect_data"
                 },
                 {
                     "selector": {
                         "type": "xpath",
-                        "command": "//a[contains(@class, \"jofogasicon-right\")]/@href"
+                        "command": "//img[@src=\"https://img-ssl.vatera.hu/images/search/arw_frw.gif\"]/../@href"
                     },
                     "call_method": "visit_products"
                 }
@@ -43,14 +43,15 @@
                     "name": "title",
                     "selector": {
                         "type": "xpath",
-                        "command": "//meta[@property=\"og:title\"]/@content"
+                        "command": "//*[@id=\"pvp-title-subtitle-box\"]",
+                        "parse_as": "text"
                     }
                 },
                 {
                     "name": "category",
                     "selector": {
                         "type": "xpath",
-                        "command": "//div[@itemprop=\"category\"]/span[2]",
+                        "command": "//*[@id=\"pvp-category-tree\"]/ul/li[4]/a/span|//*[@id=\"pvp-category-tree\"]/ul/li[3]/a/span",
                         "parse_as": "text"
                     }
                 },
@@ -58,14 +59,15 @@
                     "name": "description",
                     "selector": {
                         "type": "xpath",
-                        "command": "//meta[@property=\"og:description\"]/@content"
+                        "command": "//*[@id=\"pvp-product-description-box-tabs\"]",
+                        "parse_as": "text"
                     }
                 },
                 {
                     "name": "price",
                     "selector": {
-                        "type": "regex",
-                        "command": "package_price=([0-9]+)",
+                        "type": "xpath",
+                        "command": "//*[contains(@class, 'fix-product-price')]|//*[contains(@class, 'fixauction-min-price')]|//*[contains(@class, 'auction-min-price')]",
                         "parse_as": "number"
                     }
                 },

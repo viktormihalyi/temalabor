@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="style.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/http-vue-loader"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <title>UsedPC</title>
+</head>
+
+<body>
+    <div class="top">
+        <div class="jumbotron text-center" style="margin-bottom: 0px">
+            <a class="name" href="index.html">
+                <h1>UsedPC</h1>
+            </a>
+        </div>
+        <nav class="navbar navbar-expand-lg bg-dark navbar-dark">
+            <span class="navbar-brand">Kategóriák</span>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="collapsibleNavbar">
+                <ul class="navbar-nav categories">
+                    <li class="nav-item" v-for="item in items">
+                        <a @click="updateFilters(item.id)" class="nav-link" href="#">{{item.value}}</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div id="listOfFilters" class="col-sm-3">
+                <div>
+                    <form id="filterFormItems">
+                        <div>
+                            <center><button class="btn btn-primary" style="margin:25px">Találatok szűrése</button></center>
+                            <h5>Keresés</h5>
+                            <input type="text" name="searched" class="form-control" id="searchedText">
+                            <h5 style="margin-top:25px">Ár</h5>
+                            <div class="input-group mb-3">
+                                <input type="number" name="priceFrom" class="form-control" placeholder="Minimum">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"> - </span>
+                                </div>
+                                <input type="number" name="priceTo" class="form-control" placeholder="Maximum">
+                            </div>
+                        </div>
+                        <div id="filtersList">
+                            <template v-if="currComp != 'comp10'">
+                                <component v-bind:is="currComp"></component>
+                            </template>
+                            <template v-else>
+                                <div v-for="item in linkToTop.items">
+                                    <template v-if="item.id!='comp10'">
+                                        <h4 class="complettList">{{item.value}}</h4>
+                                        <component v-bind:is="item.id"></component>
+                                    </template>
+                                </div>
+                            </template>
+<!-- 
+                            <div v-for="item in linkToTop.items">
+                                <div v-if="'filters' in item">
+                                    <div v-for="filter in item.filters">
+                                        <h5 style="margin-top:25px">{{filter.title}}</h5>
+
+                                        <div v-if="filter.type == 'single-choice'" class="custom-control custom-radio" v-for="value in filter.values">
+                                            <input type="radio" class="custom-control-input" :id="value" :name="filter.name" :value="value">
+                                            <label class="custom-control-label" :for="value">{{value}}</label>
+                                        </div>  
+                                    
+                                        <div v-if="filter.type == 'multi-choice'" class="custom-control custom-checkbox" v-for="value in filter.values">
+                                            <input type="checkbox" class="custom-control-input" :id="value" :name="filter.name" :value="value">
+                                            <label class="custom-control-label" :for="value">{{value}}</label>
+                                        </div>  
+
+                                    </div>
+                                </div>
+                            </div> -->
+                        </div>
+
+                        <input hidden id="pageFrom" type="number" name="pageFrom" class="form-control">
+                        <input hidden id="pageTo" type="number" name="pageTo" class="form-control">
+
+                    </form>
+                </div>
+            </div>
+            <div id="results" class="col-sm-9">
+                <div class="adCard" v-for="value in advertisements">
+                    <div class="title_">{{value.title}}</div>
+                    <div class="row">
+                        <!-- <div class="col-sm-2"><img class="img-fluid picture" :src="value.image_url" alt="Hirdetés képe"></div> -->
+                        <div class="col-sm-2"><img class="img-fluid picture" src="https://via.placeholder.com/100" alt="Hirdetés képe"></div>
+                        <div class="priceN col-sm-10">
+                            <div style="margin-top:10px;">Ár: <span class="priceV">{{value.price}} Ft</span><br></div>
+                            Link: <a v-bind:href="value.url" target="_blank" class="urlV">{{value.url}}</a><br>
+                            <div style="margin-top:10px;">Ellenőrizve: <span class="checkV">{{calcScrapedTime(value.timeStamp)}} napja</span></div>
+                        </div>
+                    </div>
+                    <div style="text-align:justify">{{value.description}}</div>
+                </div>
+                <div class="adCard" style="text-align: center">
+                    <button style="margin:5px;" @click="newPage(n)" name="ResultsFrom" v-for="n in Math.ceil(resultsLength/itemsPerPage)" class="btn btn-primary">{{n}}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+
+        var topCategories = new Vue({
+            el: '.categories',
+            data: {
+                items: [
+                    { id: 'comp0', value: 'Alaplap',
+                        filters: [
+                            { title: "Méret szabány", name: 'sizestd', type: 'multi-choice', values: ['ATX', 'micro-ATX', 'mini-ATX'] },
+                            { title: "Memória típusa", name: 'memsize', type: 'single-choice', values: ['DDR3', 'DDR4'] },
+                        ]
+                    },
+                    { id: 'comp1', value: 'Processzor' },
+                    { id: 'comp2', value: 'RAM' },
+                    { id: 'comp3', value: 'Hűtés' },
+                    { id: 'comp4', value: 'Ház' },
+                    { id: 'comp5', value: 'Táp' },
+                    { id: 'comp6', value: 'Videokártya' },
+                    { id: 'comp7', value: 'HDD' },
+                    { id: 'comp8', value: 'SSD' },
+                    { id: 'comp9', value: 'Optikai meghajtó' },
+                    { id: 'comp10', value: 'Komplett gép' }
+                ]
+            },
+            methods: {
+                updateFilters: function (selected) {
+                    filtersList.currComp = selected;
+                    results.updateData();
+                },
+            }
+        });
+        var filtersList = new Vue({
+            el: '#filtersList',
+            data() {
+                return {
+                    currComp: "comp0",
+                    linkToTop:topCategories
+                }
+            },
+            components: {
+                'comp0': httpVueLoader('vues/motherboard.vue'),
+                'comp1': httpVueLoader('vues/proci.vue'),
+                'comp2': httpVueLoader('vues/ram.vue'),
+                'comp3': httpVueLoader('vues/cooling.vue'),
+                'comp4': httpVueLoader('vues/case.vue'),
+                'comp5': httpVueLoader('vues/psu.vue'),
+                'comp6': httpVueLoader('vues/videocard.vue'),
+                'comp7': httpVueLoader('vues/hdd.vue'),
+                'comp8': httpVueLoader('vues/ssd.vue'),
+                'comp9': httpVueLoader('vues/optic.vue'),
+            },
+        });
+
+        const API_BASE_URL = 'http://46.101.165.79:5000';
+
+        var results = new Vue({
+            el: '#results',
+            data() {
+                return {
+                    advertisements: null,
+                    resultsLength:null,
+                    itemsPerPage:3
+                }
+            },
+            methods: {
+                calcScrapedTime: function (timestmp) {
+                    var date1 = new Date(timestmp * 1000);
+                    var date2 = new Date();
+                    var timeDiff = Math.abs(date2.getTime() - date1.getTime());
+                    var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+                    return diffDays;
+                },
+                newPage:function (n){
+                    document.getElementById("pageFrom").value = this.itemsPerPage*n-this.itemsPerPage;
+                    if (this.itemsPerPage*n<this.resultsLength)
+                        document.getElementById("pageTo").value = this.itemsPerPage*n;
+                    else 
+                        document.getElementById("pageTo").value = this.resultsLength;
+                    document.getElementById("filterFormItems").submit();
+                },
+
+                updateData: function() {
+                    this.advertisements = [];
+                    this.resultsLength = 0;
+
+                    let requestParams = {};
+
+                    let category = topCategories.items[filtersList.currComp.slice(4)].value;
+                    requestParams["category"] = category;
+
+                    let currentUrlParams = new URL(window.location.href).searchParams;
+
+                    let searchedText = currentUrlParams.get("searched");
+                    if (searchedText) {
+                        requestParams["title"] = searchedText; 
+                    }
+                    
+                    console.log("url params:", requestParams);
+
+                    axios
+                        .get(API_BASE_URL + "/api/product/search", {
+                            params: requestParams
+                        })
+                        .then((response) => {
+                            this.advertisements = response.data;
+                            this.resultsLength = this.advertisements.length;
+                        }); 
+                }
+            },
+            mounted: function(){
+                this.updateData();
+            }
+        });
+    </script>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

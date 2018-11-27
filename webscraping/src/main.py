@@ -9,6 +9,7 @@ from config_validator import validate_spider_configuration
 from configurationspider import ConfigurationSpider
 from dbmanager import DbManager
 
+
 if __name__ == '__main__':
     configure_logging()
 
@@ -21,8 +22,10 @@ if __name__ == '__main__':
     # create db manager
     db = DbManager(elastic_url=project_settings.get('ELASTICSEARCH_URL'))
 
+    # collect spiders here
     runner = CrawlerProcess(settings=project_settings)
 
+    # get all configs from the 'piders' folder
     for spider_file in spider_files:
         with open(os.path.join('spiders', spider_file)) as f:
             spider_config = json.load(f)
@@ -34,6 +37,7 @@ if __name__ == '__main__':
         if not success:
             continue
 
+        # add it to the runner
         runner.crawl(ConfigurationSpider, config=spider_config)
 
     runner.start()
