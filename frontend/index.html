@@ -46,12 +46,24 @@
                 <div id="listOfFilters" class="col-sm-3">
                     <div>
                         <div>
+
                             <center>
                                 <button class="btn btn-primary" style="margin:25px">Találatok szűrése</button>
                             </center>
+
                             <h5>Keresés</h5>
-                            <input type="text" name="searched" class="form-control" id="searchedText" v-model="searchText">
-                        </div>   
+                            <input type="text" name="searched" class="form-control" v-model="searchText">
+
+                            <h5 style="margin-top:25px">Ár</h5>
+                            <div class="input-group mb-3">
+                                <input type="number" class="form-control" placeholder="Minimum" v-model="priceMin">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"> - </span>
+                                </div>
+                                <input type="number" class="form-control" placeholder="Maximum" v-model="priceMax">
+                            </div>
+
+                        </div>
                     </div>
                 </div>
 
@@ -60,10 +72,10 @@
                         <div class="title_">{{p.title}}</div>
                         <div class="row">
 
-                            <!-- placeholder image insted of the real one -->
                             <div class="col-sm-2">
-                                <!-- <img class="img-fluid picture" :src="p.image_url" alt="Hirdetés képe"> -->
-                                <img class="img-fluid picture" src="https://via.placeholder.com/100" alt="Hirdetés képe">
+                            <img class="img-fluid picture" :src="p.image_url" alt="Hirdetés képe">
+                                <!-- placeholder image insted of the real one -->
+                                <!-- <img class="img-fluid picture" src="https://via.placeholder.com/100" alt="Hirdetés képe"> -->
                             </div>
 
                             <div class="priceN col-sm-10">
@@ -88,7 +100,7 @@
                             <span class="btn btn-secondary">{{currentPage}} </span>
                             <button style="margin:5px;" class="btn btn-primary" v-for="i in PAGE_COUNT" @click="currentPage += i">{{currentPage + i}} </button>
                             <button style="margin:5px;" class="btn btn-primary" @click="currentPage += 1">next</button>
-                
+
 
                         <!-- <button style="margin:5px;" @click="newPage(n)" name="ResultsFrom" v-for="n in Math.ceil(resultsLength/itemsPerPage)" class="btn btn-primary">{{n}}</button> -->
                     </div>
@@ -101,7 +113,7 @@
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="https://unpkg.com/lodash/lodash.js"></script>
-    
+
     <script type="text/javascript">
         let app = new Vue({
             el: '#app',
@@ -111,7 +123,9 @@
                 URL_PARAMS: {
                     SEARCH: 'search',
                     CATEGORY: 'category',
-                    PAGE_FROM: 'page'
+                    PAGE_FROM: 'page',
+                    PRICE_MIN: 'priceMin',
+                    PRICE_MAX: 'priceMax',
                 },
 
                 PAGE_COUNT: 3,
@@ -119,6 +133,9 @@
                 currentPage: 1,
 
                 searchText: "",
+
+                priceMin: "",
+                priceMax: "",
 
                 categories: [
                     { name: 'Alaplap' },
@@ -153,6 +170,19 @@
                 currentCategory: function (category) {
                     console.log('currentCategory changed');
                     this.setUrlParam(this.URL_PARAMS.CATEGORY, category.name, 'Minden');
+                    this.searchText = "";
+                    this.priceMin = "";
+                    this.priceMax = "";
+                    this.loadProducts();
+                },
+                priceMin: function(new_min) {
+                    console.log('priceMin changed');
+                    this.setUrlParam(this.URL_PARAMS.PRICE_MIN, new_min, "-1");
+                    this.loadProducts();
+                },
+                priceMax: function(new_max) {
+                    console.log('priceMax changed');
+                    this.setUrlParam(this.URL_PARAMS.PRICE_MAX, new_max, "-1");
                     this.loadProducts();
                 }
             },
@@ -173,6 +203,15 @@
                         params['pageFrom'] = this.currentPage - 1;
                         params['pageTo'] = this.currentPage;
                     }
+
+                    if (this.priceMin && this.priceMin !== "-1") {
+                        params['priceMin'] = this.priceMin;
+                    }
+
+                    if (this.priceMax && this.priceMax !== "-1") {
+                        params['priceMax'] = this.priceMax;
+                    }
+
                     return params;
                 }
             },
@@ -237,7 +276,19 @@
                     if (page_from) {
                         this.currentPage = parseInt(page_from);
                     }
+                },
+
+                loadPrice: function (searchParams) {
+                    let price_min = searchParams.get(this.URL_PARAMS.PRICE_MIN);
+                    if (price_min && price_min !== "-1") {
+                        this.priceMin = parseInt(price_min);
+                    }
+                    let price_max = searchParams.get(this.URL_PARAMS.PRICE_MAX);
+                    if (price_max && price_max !== "-1") {
+                        this.priceMax = parseInt(price_max);
+                    }
                 }
+
             },
 
             mounted: function () {
@@ -246,6 +297,7 @@
                 this.loadCategoryFromUrl(url);
                 this.loadSearchFromUrl(url);
                 this.loadPageNumber(url);
+                this.loadPrice(url);
 
                 this.changeCategory(this.currentCategory);
             }
