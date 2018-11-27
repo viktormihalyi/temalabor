@@ -27,7 +27,15 @@ namespace webscraper.Controllers
 
         // GET api/product/name
         [HttpGet("search")]
-        public async Task<IActionResult> Get(string category, string title,int pageFrom = 0, int pageTo = 1, int pageSize = 20)
+        public async Task<IActionResult> Get(
+            string category, 
+            string title,
+            int pageFrom = 0, 
+            int pageTo = 1, 
+            int pageSize = 20,
+            int priceMin = -1,
+            int priceMax = -1
+        )
         {   
             
             QueryContainer qContainer = new QueryContainer();
@@ -42,10 +50,28 @@ namespace webscraper.Controllers
             }
             if (title != null)
             {
-                qContainer = qContainer && qcd.Match(m => m
-                        .Field(f => f.Title)
-                        .Query(title)
+                qContainer = qContainer && qcd.MultiMatch(
+                    s => s
+                    .Fields(fs => fs
+                        .Field(f=>f.Title)
+                        .Field(f=>f.Description)
+                    )
+                    .Query(title)
                 );
+            }
+            
+            if(priceMin != -1){
+                qContainer = qContainer && qcd.Range( m => m
+                    .Field(f => f.Price)
+                    .GreaterThanOrEquals(priceMin)
+                );
+            }
+
+            if(priceMax != -1){
+                qContainer = qContainer && qcd.Range(m => m
+                  .Field(f=>f.Price)
+                  .LessThanOrEquals(priceMax)
+               );
             }
            
             var response = await _elasticClient.SearchAsync<Product>(s => s 
