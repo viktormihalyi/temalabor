@@ -40,4 +40,6 @@ if __name__ == '__main__':
         # add it to the runner
         runner.crawl(ConfigurationSpider, config=spider_config)
 
+    db.wait_for_connection()
+
     runner.start()

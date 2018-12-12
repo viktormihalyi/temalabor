@@ -24,3 +24,14 @@ class DbManager:
 
         document_id = hashlib.sha256(item['url'].encode('utf-8')).hexdigest()
         self.es.index(index=self.ES_INDEX, doc_type=self.ES_DOC_TYPE, id=document_id, body=item)
+
+    def wait_for_connection(self):
+        """
+        Waits for database connection.
+        """
+
+        connected = False
+        while not connected:
+            connected = self.es.ping()
+        return connected
+
